@@ -10,7 +10,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
-using InTechStore.WEB.Models;
+using InTechStore.WEB.ViewModels;
 using InTechStore.DAL.Entities;
 
 namespace InTechStore.WEB

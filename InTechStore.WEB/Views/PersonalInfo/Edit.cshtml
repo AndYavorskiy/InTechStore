@@ -1,0 +1,15 @@
+﻿@model InTechStore.WEB.ViewModels.PersonalInfoViewModel
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm("Edit", "PersonalInfo", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.EditorForModel();
+    @Html.ValidationSummary();
+    <input type="submit" value="Підтвердити" />
+}

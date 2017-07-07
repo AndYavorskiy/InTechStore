@@ -13,7 +13,7 @@ namespace InTechStore.DAL.Entities
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
         public string LastName { get; set; }
-        public DateTime Birthday { get; set; }
+        public DateTime? Birthday { get; set; }
         public Gender Gender { get; set; }
 
         public virtual ApplicationUser ApplicationUser { get; set; }

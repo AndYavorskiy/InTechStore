@@ -16,8 +16,8 @@ namespace InTechStore.DAL.Entities
 
         public virtual PurchaseInfo PurchaseInfo { get; set; }
 
-        public DateTime OrderDate { get; set; }
-        public DateTime ReceivingDate { get; set; }
+        public DateTime? OrderDate { get; set; }
+        public DateTime? ReceivingDate { get; set; }
         public DeliveryStatus DeliveryStatus { get; set; }
     }
 

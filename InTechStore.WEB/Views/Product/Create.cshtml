@@ -1,0 +1,14 @@
+﻿@model InTechStore.WEB.ViewModels.CreateProductViewModel
+@{
+    ViewBag.Title = "CreateProduct";
+}
+
+<h2>CreateProduct</h2>
+@using (Html.BeginForm("Create", "Product", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.EditorForModel();
+    @Html.ValidationSummary();
+    <input type="submit" value="Створити" />
+}

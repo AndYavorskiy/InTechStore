@@ -98,7 +98,7 @@ namespace InTechStore.DAL.Repositories
 
         public void SaveChanges()
         {
-            _context.SaveChanges();
+           _context.SaveChanges();
         }
 
         #region IDisposable Support

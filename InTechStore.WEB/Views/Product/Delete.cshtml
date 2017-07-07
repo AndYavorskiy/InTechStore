@@ -1,0 +1,75 @@
+﻿@model InTechStore.WEB.ViewModels.DeleteProductViewModel
+
+@{
+    ViewBag.Title = "Видалення продукту";
+}
+
+<h2>Видалення продукту</h2>
+<div>
+    <div>Ви впевнені що хочете видалити цей робочий час?</div>
+    
+    <div>
+        <div>
+            @Html.DisplayNameFor(model => model.Id)
+        </div>
+        <div>
+            @Html.DisplayFor(model => model.Id)
+        </div>
+    </div>
+
+    <div>
+        <div>
+            @Html.DisplayNameFor(model => model.Name)
+        </div>
+        <div>
+            @Html.DisplayFor(model => model.Name)
+        </div>
+    </div>
+
+    <div>
+        <div>
+            @Html.DisplayNameFor(model => model.SerialNumber)
+        </div>
+        <div>
+            @Html.DisplayFor(model => model.SerialNumber)
+        </div>
+    </div>
+
+    <div>
+        <div>
+            @Html.DisplayNameFor(model => model.Count)
+        </div>
+        <div>
+            @Html.DisplayFor(model => model.Count)
+        </div>
+    </div>
+
+    <div>
+        <div>
+            @Html.DisplayNameFor(model => model.Price)
+        </div>
+        <div>
+            @Html.DisplayFor(model => model.Price)
+        </div>
+    </div>
+
+    <div>
+        <div>
+            @Html.DisplayNameFor(model => model.Description)
+        </div>
+        <div>
+            @Html.DisplayFor(model => model.Description)
+        </div>
+    </div>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div>
+            @Html.ActionLink("< Назад до таблиці", "Index")
+            <input type="submit" value="Видалити"/>
+        </div>
+    }
+</div>
+

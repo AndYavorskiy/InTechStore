@@ -5,7 +5,7 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
 using Owin;
-using InTechStore.WEB.Models;
+using InTechStore.WEB.ViewModels;
 using InTechStore.DAL.Entities;
 
 namespace InTechStore.WEB

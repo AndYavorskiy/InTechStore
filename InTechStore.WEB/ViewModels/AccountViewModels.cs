@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace InTechStore.WEB.Models
+namespace InTechStore.WEB.ViewModels
 {
     public class ExternalLoginConfirmationViewModel
     {
@@ -64,6 +64,11 @@ namespace InTechStore.WEB.Models
 
     public class RegisterViewModel
     {
+        [Required]
+        [StringLength(15, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 2)]
+        [Display(Name = "UserName")]
+        public string UserName { get; set; }
+
         [Required]
         [EmailAddress]
         [Display(Name = "Email")]

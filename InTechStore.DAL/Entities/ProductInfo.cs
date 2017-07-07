@@ -13,8 +13,8 @@ namespace InTechStore.DAL.Entities
         public string SerialNumber { get; set; }
         public decimal Price { get; set; }
         public string Description { get; set; }
-        public DateTime ManufactureDate { get; set; }
-        public DateTime LastDate { get; set; }
+        public DateTime? ManufactureDate { get; set; }
+        public DateTime? LastDate { get; set; }
 
         public int? CategoryId { get; set; }
         public virtual Category Category { get; set; }

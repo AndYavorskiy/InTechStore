@@ -1,0 +1,63 @@
+﻿@model InTechStore.WEB.ViewModels.PersonalInfoViewModel
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Особиста інформація</h2>
+<div>
+    <div>
+        <div>
+            @Html.DisplayNameFor(m => Model.LastName)
+        </div>
+        <div>
+            @Html.DisplayFor(m => Model.LastName)
+        </div>
+    </div>
+
+    <div>
+        <div>
+            @Html.DisplayNameFor(m => Model.FirstName)
+        </div>
+        <div>
+            @Html.DisplayFor(m => Model.FirstName)
+        </div>
+    </div>
+
+    <div>
+        <div>
+            @Html.DisplayNameFor(m => Model.MiddleName)
+        </div>
+        <div>
+            @Html.DisplayFor(m => Model.MiddleName)
+        </div>
+    </div>
+
+    <div>
+        <div>
+            @Html.DisplayNameFor(m => Model.Birthday)
+        </div>
+        <div>
+            @Html.DisplayFor(m => Model.Birthday)
+        </div>
+    </div>
+
+    <div>
+        <div>
+            @Html.DisplayNameFor(m => Model.Gender)
+        </div>
+        <div>
+            @Html.DisplayFor(m => Model.Gender)
+        </div>
+    </div>
+
+    <div>
+        <div>
+            @Html.ActionLink("Редагувати", "Edit")
+        </div>
+        <div>
+            @Html.ActionLink("Назад", "Index", "Manage");
+        </div>
+    </div>
+
+
+</div>
