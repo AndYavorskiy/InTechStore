@@ -13,7 +13,6 @@ namespace InTechStore.DAL.Repositories
         private ApplicationRoleManager _roleManager;
 
         private IGenericRepository<PersonalInfo> _personalInfoRepository;
-        private IGenericRepository<AddInfo> _addInfoRepository;
         private IGenericRepository<Payment> _paymentRepository;
         private IGenericRepository<Product> _productRepository;
         private IGenericRepository<ProductInfo> _productInfoRepository;
@@ -37,13 +36,6 @@ namespace InTechStore.DAL.Repositories
             get
             {
                 return _personalInfoRepository ?? (_personalInfoRepository = new EFGenericRepository<PersonalInfo>(_context));
-            }
-        }
-        public IGenericRepository<AddInfo> AddInfoRepository
-        {
-            get
-            {
-                return _addInfoRepository ?? (_addInfoRepository = new EFGenericRepository<AddInfo>(_context));
             }
         }
         public IGenericRepository<Payment> PaymentRepository

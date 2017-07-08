@@ -15,6 +15,8 @@ namespace InTechStore.DAL.Entities
         public string LastName { get; set; }
         public DateTime? Birthday { get; set; }
         public Gender Gender { get; set; }
+        public string Address { get; set; }
+        public string Image { get; set; }
 
         public virtual ApplicationUser ApplicationUser { get; set; }
     }

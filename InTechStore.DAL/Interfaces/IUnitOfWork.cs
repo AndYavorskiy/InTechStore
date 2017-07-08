@@ -10,7 +10,6 @@ namespace InTechStore.DAL.Interfaces
         ApplicationRoleManager RoleManager { get; }
 
         IGenericRepository<PersonalInfo> PersonalInfoRepository { get; }
-        IGenericRepository<AddInfo> AddInfoRepository { get; }
         IGenericRepository<Payment> PaymentRepository { get; }
 
         IGenericRepository<Product> ProductRepository { get; }

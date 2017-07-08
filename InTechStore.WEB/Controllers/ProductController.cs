@@ -36,6 +36,37 @@ namespace InTechStore.WEB.Controllers
             return View(productInfoViewModel);
         }
 
+        public ActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            Product product = _products.Where(p => p.Id == id.Value).FirstOrDefault();
+
+            if (product == null)
+            {
+                return HttpNotFound();
+            }
+
+            DetailsProductViewModel detailProdVM = new DetailsProductViewModel()
+            {
+                Id = product.Id,
+                Name = product.ProductInfo.Name,
+                Count = product.Count,
+                Price = product.ProductInfo.Price,
+                Description = product.ProductInfo.Description,
+                SerialNumber = product.ProductInfo.SerialNumber,
+                Category = product.ProductInfo.Category,
+                ManufactureDate = product.ProductInfo.ManufactureDate,
+                LastDate = product.ProductInfo.LastDate
+               // Producer = product.Producer
+            };
+
+            return View(detailProdVM);
+        }
+
         [HttpGet]
         public ActionResult Create()
         {
@@ -111,7 +142,7 @@ namespace InTechStore.WEB.Controllers
             ProductInfo prodInf = _uow.ProductInfoRepository.FindById(id);
             _uow.ProductInfoRepository.Remove(prodInf);
 
-            Product deletedProd =  _uow.ProductRepository.FindById(id);
+            Product deletedProd = _uow.ProductRepository.FindById(id);
             _uow.ProductRepository.Remove(deletedProd);
             _uow.SaveChanges();
 
@@ -133,7 +164,7 @@ namespace InTechStore.WEB.Controllers
                 return HttpNotFound();
             }
 
-           EditProductViewModel editProd = new EditProductViewModel()
+            EditProductViewModel editProd = new EditProductViewModel()
             {
                 Id = product.Id,
                 Name = product.ProductInfo.Name,

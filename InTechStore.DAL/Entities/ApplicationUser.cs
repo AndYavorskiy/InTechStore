@@ -17,9 +17,8 @@ namespace InTechStore.DAL.Entities
         }
 
         public virtual PersonalInfo PersonalInfo { get; set; }
-        public virtual AddInfo AddInfo { get; set; }
         public virtual Payment Payment { get; set; }
-        public string Image { get; set; }
+
 
         public virtual ICollection<Purchase> Orders { get; set; } = new List<Purchase>();
 

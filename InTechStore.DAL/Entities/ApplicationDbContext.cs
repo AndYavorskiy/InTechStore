@@ -20,7 +20,6 @@ namespace InTechStore.DAL.Entities
         }
 
         public DbSet<PersonalInfo> PersonsInfo { get; set; }
-        public DbSet<AddInfo> AddInfos { get; set; }
         public DbSet<Payment> Payments { get; set; }
 
         public DbSet<Product> Products { get; set; }

@@ -13,6 +13,8 @@ namespace InTechStore.WEB.ViewModels
         public string LastName { get; set; }
         public DateTime? Birthday { get; set; }
         public Gender Gender { get; set; }
+        public string Address { get; set; }
+        public string Image { get; set; }
 
         public static PersonalInfoViewModel GetViewModel(PersonalInfo personalInf)
         {
@@ -22,7 +24,9 @@ namespace InTechStore.WEB.ViewModels
                 MiddleName = personalInf.MiddleName,
                 LastName = personalInf.LastName,
                 Birthday = personalInf.Birthday,
-                Gender = personalInf.Gender
+                Gender = personalInf.Gender,
+                Address = personalInf.Address,
+                Image = personalInf.Image
             };
         }
 
@@ -34,7 +38,9 @@ namespace InTechStore.WEB.ViewModels
                 MiddleName = personalInfVM.MiddleName,
                 LastName = personalInfVM.LastName,
                 Birthday = personalInfVM.Birthday,
-                Gender = personalInfVM.Gender
+                Gender = personalInfVM.Gender,
+                Address = personalInfVM.Address,
+                Image = personalInfVM.Image
             };
         }
     }

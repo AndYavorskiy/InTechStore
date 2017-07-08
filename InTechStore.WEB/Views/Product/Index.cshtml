@@ -30,6 +30,7 @@
             <p>@product.Name</p> <br>
             <p>@product.Price</p>
 
+            @Html.ActionLink("Деталі", "Details", new { Id = product.Id })
             @Html.ActionLink("Видалити", "Delete", new { Id = product.Id })
             @Html.ActionLink("Редагувати", "Edit",new {Id = product.Id })
 
