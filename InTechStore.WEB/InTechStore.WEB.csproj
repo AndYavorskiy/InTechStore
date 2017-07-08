@@ -191,6 +191,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\PaymentController.cs" />
     <Compile Include="Controllers\PersonalInfoController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Global.asax.cs">
@@ -198,6 +199,7 @@
     </Compile>
     <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="ViewModels\ManageViewModels.cs" />
+    <Compile Include="ViewModels\PaymentViewModels.cs" />
     <Compile Include="ViewModels\PersonalInfoViewModels.cs" />
     <Compile Include="ViewModels\ProductViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -268,6 +270,10 @@
     <Content Include="Views\PersonalInfo\Set.cshtml" />
     <Content Include="Views\PersonalInfo\NotSet.cshtml" />
     <Content Include="Views\PersonalInfo\Edit.cshtml" />
+    <Content Include="Views\Payment\Details.cshtml" />
+    <Content Include="Views\Payment\Set.cshtml" />
+    <Content Include="Views\Payment\NotSet.cshtml" />
+    <Content Include="Views\Payment\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -5,6 +5,10 @@ namespace InTechStore.DAL.Entities
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        static ApplicationDbContext()
+        {
+            //Database.SetInitializer<ApplicationDbContext>(new DBInicializer());
+        }
         public ApplicationDbContext()
             : base("InTechStoreDbConnection", throwIfV1Schema: false)
         {
@@ -28,8 +32,5 @@ namespace InTechStore.DAL.Entities
 
         public DbSet<Purchase> Purchases { get; set; }
         public DbSet<PurchaseInfo> PurchasesInfo { get; set; }
-
-
-
     }
 }
