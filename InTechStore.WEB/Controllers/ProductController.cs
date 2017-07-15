@@ -15,12 +15,17 @@ namespace InTechStore.WEB.Controllers
     {
         IUnitOfWork _uow;
         IEnumerable<Product> _products;
+        IEnumerable<Category> _category;
+        IEnumerable<Producer> _producers;
         IGenericRepository<ProductInfo> _prodInfRepository;
 
         public ProductController()
         {
             _uow = new EFUnitOfWork();
             _products = _uow.ProductRepository.GetAll();
+            _category = _uow.CategoryRepository.GetAll();
+            _producers = _uow.ProducerRepository.GetAll();
+            
             _prodInfRepository = _uow.ProductInfoRepository;
         }
         // GET: Product
@@ -60,8 +65,8 @@ namespace InTechStore.WEB.Controllers
                 SerialNumber = product.ProductInfo.SerialNumber,
                 Category = product.ProductInfo.Category,
                 ManufactureDate = product.ProductInfo.ManufactureDate,
-                LastDate = product.ProductInfo.LastDate
-               // Producer = product.Producer
+                LastDate = product.ProductInfo.LastDate,
+                Producer = product.Producer
             };
 
             return View(detailProdVM);
@@ -70,6 +75,20 @@ namespace InTechStore.WEB.Controllers
         [HttpGet]
         public ActionResult Create()
         {
+            Dictionary<string, string> categoryList = new Dictionary<string, string>();
+            foreach (var item in _category)
+            {
+                categoryList.Add(Convert.ToString(item.Id), item.Name);
+            }
+
+            Dictionary<string, string> producersList = new Dictionary<string, string>();
+            foreach (var item in _producers)
+            {
+                producersList.Add(Convert.ToString(item.Id), item.CompanyName);
+            }
+
+            ViewBag.Categories = new SelectList(categoryList, "Key", "Value");
+            ViewBag.Producers = new SelectList(producersList, "Key", "Value");
             return View();
         }
 
@@ -82,7 +101,8 @@ namespace InTechStore.WEB.Controllers
                 Product product = new Product()
                 {
                     Count = createdProduct.Count,
-                    AddDate = DateTime.Now
+                    AddDate = DateTime.Now,
+                    Producer = _uow.ProducerRepository.FindById(createdProduct.ProducerId.Value)
                 };
 
                 _uow.ProductRepository.Create(product);
@@ -96,7 +116,8 @@ namespace InTechStore.WEB.Controllers
                     Price = createdProduct.Price,
                     Description = createdProduct.Description,
                     ManufactureDate = createdProduct.ManufactureDate,
-                    LastDate = createdProduct.LastDate
+                    LastDate = createdProduct.LastDate,
+                    Category = _uow.CategoryRepository.FindById(createdProduct.CategoryId.Value)
                 };
 
                 _prodInfRepository.Create(productInfo);

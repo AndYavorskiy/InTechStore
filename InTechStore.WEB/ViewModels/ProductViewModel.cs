@@ -12,6 +12,7 @@ namespace InTechStore.WEB.ViewModels
         public string Description { get; set; }
 
         public int? CategoryId { get; set; }
+        public int? ProducerId { get; set; }
 
         public DateTime? ManufactureDate { get; set; }
         public DateTime? LastDate { get; set; }
@@ -36,12 +37,10 @@ namespace InTechStore.WEB.ViewModels
         public string Description { get; set; }
 
         public Category Category { get; set; }
-
-        //public virtual Producer Producer { get; set; }
+        public Producer Producer { get; set; }
 
         public DateTime? ManufactureDate { get; set; }
         public DateTime? LastDate { get; set; }
-        //TODO: (edit product) edit image
     }
 
 
