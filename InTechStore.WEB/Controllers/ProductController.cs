@@ -22,10 +22,10 @@ namespace InTechStore.WEB.Controllers
         public ProductController()
         {
             _uow = new EFUnitOfWork();
-            _products = _uow.ProductRepository.GetAll();
+            _products = _uow.ProductRepository.Get(p => p.IsInStock = true);
             _category = _uow.CategoryRepository.GetAll();
             _producers = _uow.ProducerRepository.GetAll();
-            
+
             _prodInfRepository = _uow.ProductInfoRepository;
         }
         // GET: Product
@@ -63,10 +63,10 @@ namespace InTechStore.WEB.Controllers
                 Price = product.ProductInfo.Price,
                 Description = product.ProductInfo.Description,
                 SerialNumber = product.ProductInfo.SerialNumber,
-                Category = product.ProductInfo.Category,
+                CategoryName = product.ProductInfo.Category.Name,
                 ManufactureDate = product.ProductInfo.ManufactureDate,
                 LastDate = product.ProductInfo.LastDate,
-                Producer = product.Producer
+                ProducerName = product.Producer.CompanyName
             };
 
             return View(detailProdVM);
@@ -101,6 +101,7 @@ namespace InTechStore.WEB.Controllers
                 Product product = new Product()
                 {
                     Count = createdProduct.Count,
+                    IsInStock = true,
                     AddDate = DateTime.Now,
                     Producer = _uow.ProducerRepository.FindById(createdProduct.ProducerId.Value)
                 };
@@ -195,27 +196,64 @@ namespace InTechStore.WEB.Controllers
                 SerialNumber = product.ProductInfo.SerialNumber,
             };
 
+            Dictionary<string, string> categoryList = new Dictionary<string, string>();
+            foreach (var item in _category)
+            {
+                categoryList.Add(Convert.ToString(item.Id), item.Name);
+            }
+
+            Dictionary<string, string> producersList = new Dictionary<string, string>();
+            foreach (var item in _producers)
+            {
+                producersList.Add(Convert.ToString(item.Id), item.CompanyName);
+            }
+
+            int categoryId = 0;
+            foreach (var item in categoryList.Keys)
+            {
+                categoryId++;
+                if (item == Convert.ToString(product.ProductInfo.CategoryId))
+                {
+                    break;
+                }
+            }
+
+            int producerId = 0;
+            foreach (var item2 in producersList.Keys)
+            {
+                producerId++;
+                if (item2 == Convert.ToString(product.ProducerId))
+                {
+                    break;
+                }
+            }
+
+            ViewBag.Categories = new SelectList(categoryList, "Key", "Value", categoryId);
+            ViewBag.Producers = new SelectList(producersList, "Key", "Value", producerId);
+
             return View(editProd);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(EditProductViewModel editableWorkDayTimesVM)
+        public ActionResult Edit(EditProductViewModel editableProductVM)
         {
             if (ModelState.IsValid)
             {
-                ProductInfo prodInf = _uow.ProductInfoRepository.FindById(editableWorkDayTimesVM.Id);
-                prodInf.Name = editableWorkDayTimesVM.Name;
-                prodInf.SerialNumber = editableWorkDayTimesVM.SerialNumber;
-                prodInf.Description = editableWorkDayTimesVM.Description;
-                prodInf.Price = editableWorkDayTimesVM.Price;
-                prodInf.ManufactureDate = editableWorkDayTimesVM.ManufactureDate;
-                prodInf.LastDate = editableWorkDayTimesVM.LastDate;
+                ProductInfo prodInf = _uow.ProductInfoRepository.FindById(editableProductVM.Id);
+                prodInf.Name = editableProductVM.Name;
+                prodInf.SerialNumber = editableProductVM.SerialNumber;
+                prodInf.Description = editableProductVM.Description;
+                prodInf.Price = editableProductVM.Price;
+                prodInf.ManufactureDate = editableProductVM.ManufactureDate;
+                prodInf.LastDate = editableProductVM.LastDate;
+                prodInf.Category = _uow.CategoryRepository.FindById(editableProductVM.CategoryId.Value);
 
                 _uow.ProductInfoRepository.Update(prodInf);
 
-                Product prod = _uow.ProductRepository.FindById(editableWorkDayTimesVM.Id);
-                prod.Count = editableWorkDayTimesVM.Count;
+                Product prod = _uow.ProductRepository.FindById(editableProductVM.Id);
+                prod.Count = editableProductVM.Count;
+                prod.Producer = _uow.ProducerRepository.FindById(editableProductVM.ProducerId.Value);
 
                 _uow.ProductRepository.Update(prod);
                 _uow.SaveChanges();
@@ -223,7 +261,7 @@ namespace InTechStore.WEB.Controllers
                 return RedirectToAction("Index");
             }
 
-            return View(editableWorkDayTimesVM);
+            return View(editableProductVM);
         }
     }
 }

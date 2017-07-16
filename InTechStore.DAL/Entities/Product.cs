@@ -12,6 +12,7 @@ namespace InTechStore.DAL.Entities
         public int Count { get; set; }
         public DateTime? AddDate { get; set; }
         public string Image { get; set; }
+        public bool IsInStock { get; set; }
 
         public int? ProducerId { get; set; }
         public virtual Producer Producer { get; set; }

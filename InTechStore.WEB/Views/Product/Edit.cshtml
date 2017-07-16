@@ -7,81 +7,97 @@
 <h2>Редагування продукту</h2>
 
 <div>
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
 
 
-    <div>
         <div>
-            @Html.DisplayNameFor(model => model.Name)
+            <div>
+                @Html.DisplayNameFor(model => model.Name)
+            </div>
+            <div>
+                @Html.EditorFor(model => model.Name)
+                @Html.ValidationMessageFor(model => model.Name)
+            </div>
         </div>
-        <div>
-            @Html.EditorFor(model => model.Name)
-            @Html.ValidationMessageFor(model => model.Name)
-        </div>
-    </div>
 
-    <div>
         <div>
-            @Html.DisplayNameFor(model => model.SerialNumber)
+            <div>
+                @Html.DisplayNameFor(model => model.SerialNumber)
+            </div>
+            <div>
+                @Html.EditorFor(model => model.SerialNumber)
+                @Html.ValidationMessageFor(model => model.SerialNumber)
+            </div>
         </div>
-        <div>
-            @Html.EditorFor(model => model.SerialNumber)
-            @Html.ValidationMessageFor(model => model.SerialNumber)
-        </div>
-    </div>
 
-    <div>
         <div>
-            @Html.DisplayNameFor(model => model.Count)
+            <div>
+                @Html.DisplayNameFor(model => model.Count)
+            </div>
+            <div>
+                @Html.EditorFor(model => model.Count)
+                @Html.ValidationMessageFor(model => model.Count)
+            </div>
         </div>
-        <div>
-            @Html.EditorFor(model => model.Count)
-            @Html.ValidationMessageFor(model => model.Count)
-        </div>
-    </div>
 
-    <div>
         <div>
-            @Html.DisplayNameFor(model => model.Price)
+            <div>
+                @Html.DisplayNameFor(model => model.Price)
+            </div>
+            <div>
+                @Html.EditorFor(model => model.Price)
+                @Html.ValidationMessageFor(model => model.Price)
+            </div>
         </div>
-        <div>
-            @Html.EditorFor(model => model.Price)
-            @Html.ValidationMessageFor(model => model.Price)
-        </div>
-    </div>
 
-    <div>
         <div>
-            @Html.DisplayNameFor(model => model.Description)
+            <div>
+                @Html.DisplayNameFor(model => model.Description)
+            </div>
+            <div>
+                @Html.EditorFor(model => model.Description)
+                @Html.ValidationMessageFor(model => model.Description)
+            </div>
         </div>
-        <div>
-            @Html.EditorFor(model => model.Description)
-            @Html.ValidationMessageFor(model => model.Description)
-        </div>
-    </div>
 
-    <div>
         <div>
-            @Html.DisplayNameFor(model => model.ManufactureDate)
+            <div>
+                @Html.DisplayNameFor(model => model.ManufactureDate)
+            </div>
+            <div>
+                @Html.EditorFor(model => model.ManufactureDate)
+                @Html.ValidationMessageFor(model => model.ManufactureDate)
+            </div>
         </div>
         <div>
-            @Html.EditorFor(model => model.ManufactureDate)
-            @Html.ValidationMessageFor(model => model.ManufactureDate)
+            <div>
+                @Html.DisplayNameFor(model => model.LastDate)
+            </div>
+            <div>
+                @Html.EditorFor(model => model.LastDate)
+                @Html.ValidationMessageFor(model => model.LastDate)
+            </div>
         </div>
-    </div>
-    <div>
-        <div>
-            @Html.DisplayNameFor(model => model.LastDate)
-        </div>
-        <div>
-            @Html.EditorFor(model => model.LastDate)
-            @Html.ValidationMessageFor(model => model.LastDate)
-        </div>
-    </div>
 
-    @Html.ValidationSummary();
+        <div class="form-group">
+            @Html.DisplayNameFor(model => model.CategoryId)
+            <div class="col-md-9">
+                @Html.DropDownList("CategoryId", (IEnumerable<SelectListItem>)ViewBag.Categories)
+                @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.DisplayNameFor(model => model.ProducerId)
+            <div class="col-md-9">
+                @Html.DropDownList("ProducerId", (IEnumerable<SelectListItem>)ViewBag.Producers)
+                @Html.ValidationMessageFor(model => model.ProducerId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @Html.ValidationSummary();
 
         <div>
             @Html.ActionLink("< Назад до товарів", "Index")
@@ -89,4 +105,3 @@
         </div>
     }
 </div>
-

@@ -1,0 +1,43 @@
+﻿@model InTechStore.WEB.ViewModels.MakePurchaseViewModel
+@{
+    ViewBag.Title = "Make";
+}
+
+<h2>Замовлення товару @Model.Product.ProductInfo.Name</h2>
+
+@using (Html.BeginForm())
+{
+
+    @Html.AntiForgeryToken()
+
+    @Html.RouteLink("Опис товару", new { controller = "Product", action = "Details", id = Model.Product.Id })
+
+    @Html.HiddenFor(Model=>Model.ProductId)
+
+    <div class="form-horizontal">
+        <div class="form-group">
+            @Html.LabelFor(model => model.Count, htmlAttributes: new { @class = "label col-md-3" })
+            <div class="col-md-9">
+                @Html.EditorFor(model => model.Count, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Count, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.DiscountCode, htmlAttributes: new { @class = "label col-md-3" })
+            <div class="col-md-9">
+                @Html.EditorFor(model => model.DiscountCode, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.DiscountCode, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <h3>Ціна: </h3>
+        <h3>@Model.Product.ProductInfo.Price</h3>
+    </div>
+
+
+
+    @Html.ValidationSummary();
+    <input type="submit" value="Підтвердити" />
+}
