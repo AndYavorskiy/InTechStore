@@ -6,16 +6,28 @@
 }
 
 <style>
-    .product-item {
+    .product-item-available {
         background-color: Highlight;
         margin: 5px;
-        width: 150px;
+        width: 200px;
+        height: 300px;
+    }
+
+    .product-item-unavailable {
+        background-color: lavender;
+        margin: 5px;
+        width: 200px;
         height: 150px;
     }
 
     .product-container {
         display: flex;
         flex-wrap: wrap;
+    }
+
+    .image {
+        width: 200px;
+        height: 170px;
     }
 </style>
 
@@ -26,15 +38,37 @@
 <div class="product-container">
     @foreach (var product in Model)
     {
-        <div class="product-item">
-            <p>@product.Name</p> <br>
-            <p>@product.Price</p>
+        if (product.IsInStock)
+        {
+            <div class="product-item-available">
+                <div class="image">
+                    <img src="@product.Image"  class="image"/>
+                </div>
 
-            @Html.ActionLink("Деталі", "Details", new { Id = product.Id })
-            @Html.ActionLink("Видалити", "Delete", new { Id = product.Id })
-            @Html.ActionLink("Редагувати", "Edit", new { Id = product.Id })
-          
-            @Html.RouteLink("Купити",new { controller= "Purchase", action = "Make", id = product.Id })
-        </div>
+                <p>@product.Name</p> <br>
+                <p>@product.Price</p>
+
+                @Html.ActionLink("Деталі", "Details", new { Id = product.Id })
+                @Html.ActionLink("Видалити", "Delete", new { Id = product.Id })
+                @Html.ActionLink("Редагувати", "Edit", new { Id = product.Id })
+
+                @Html.RouteLink("Купити", new { controller = "Purchase", action = "Make", id = product.Id })
+            </div>
+        }
+        else
+        {
+            <div class="product-item-unavailable">
+                <p>@product.Name</p> <br>
+                <p>@product.Price</p>
+
+                @Html.ActionLink("Деталі", "Details", new { Id = product.Id })
+                @Html.ActionLink("Видалити", "Delete", new { Id = product.Id })
+                @Html.ActionLink("Редагувати", "Edit", new { Id = product.Id })
+
+                @Html.RouteLink("Купити", new { controller = "Purchase", action = "Make", id = product.Id })
+            </div>
+        }
+
+
     }
 </div>

@@ -20,6 +20,7 @@ namespace InTechStore.DAL.Repositories
         private IGenericRepository<Producer> _producerRepository;
         private IGenericRepository<Purchase> _purchaseRepository;
         private IGenericRepository<PurchaseInfo> _purchaseInfoRepository;
+        private IGenericRepository<Discount> _discountRepository;
 
         public EFUnitOfWork()
         {
@@ -88,6 +89,13 @@ namespace InTechStore.DAL.Repositories
             }
         }
 
+        public IGenericRepository<Discount> DiscountRepository
+        {
+            get
+            {
+                return _discountRepository ?? (_discountRepository = new EFGenericRepository<Discount>(_context));
+            }
+        }
         public void SaveChanges()
         {
            _context.SaveChanges();

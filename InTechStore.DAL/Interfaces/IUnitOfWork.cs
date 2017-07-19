@@ -20,6 +20,7 @@ namespace InTechStore.DAL.Interfaces
 
         IGenericRepository<Purchase> PurchaseRepository { get; }
         IGenericRepository<PurchaseInfo> PurchaseInfoRepository { get; }
+        IGenericRepository<Discount> DiscountRepository { get; }
 
         void SaveChanges();
     }

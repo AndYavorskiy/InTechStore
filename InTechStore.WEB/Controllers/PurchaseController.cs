@@ -45,7 +45,7 @@ namespace InTechStore.WEB.Controllers
                 {
                     Id = item.Id,
                     ApplicationUserName = item.ApplicationUser.UserName,
-                    ProductId = item.ProductId.Value,
+                    ProductId = item.ProductId,
                     ProductName = item.Product.ProductInfo.Name,
                     Count = item.PurchaseInfo.Count,
                     Discount = item.PurchaseInfo.Discount,
@@ -89,10 +89,17 @@ namespace InTechStore.WEB.Controllers
         {
             if (ModelState.IsValid)
             {
-                Product product = _products.Where(p => p.Id == order.ProductId).FirstOrDefault();
-                if ( order.Count>0 && product.Count>=order.Count)
+                Product product = _uow.ProductRepository.Get(p => p.Id == order.ProductId).FirstOrDefault();
+                if (order.Count > 0 && product.Count >= order.Count)
                 {
                     product.Count -= order.Count;
+
+                    if (product.Count == 0)
+                    {
+                        product.IsInStock = false;
+                    }
+
+                    _uow.ProductRepository.Update(product);
                     _uow.SaveChanges();
 
                 }
@@ -113,19 +120,22 @@ namespace InTechStore.WEB.Controllers
                 _uow.PurchaseRepository.Create(purchase);
                 _uow.SaveChanges();
 
-                int discount = 0;
-                if (order.DiscountCode == "1234567890")
+
+                double discount = 0;
+                Discount _discount = _uow.DiscountRepository.Get(d => d.Code == order.DiscountCode).FirstOrDefault();
+                if (_discount != null)
                 {
-                    discount = 15;
+                    discount = _discount.Value;
                 }
 
+                decimal sum = (decimal)((double)(product.ProductInfo.Price) * order.Count * (1 - (discount / (double)100)));
 
                 PurchaseInfo purInf = new PurchaseInfo()
                 {
                     Id = purchase.Id,
                     Count = order.Count,
                     Discount = discount,
-                    Sum = product.ProductInfo.Price - product.ProductInfo.Price * discount
+                    Sum =sum
                 };
                 _uow.PurchaseInfoRepository.Create(purInf);
 
@@ -137,6 +147,52 @@ namespace InTechStore.WEB.Controllers
             }
 
             return View();
+        }
+
+        [HttpGet]
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            Purchase purchase = _purchases.Where(p => p.Id == id.Value).FirstOrDefault();
+
+            if (purchase == null)
+            {
+                return HttpNotFound();
+            }
+
+            DeletePurchaseViewModel deletePurchase = new DeletePurchaseViewModel()
+            {
+                Id = purchase.Id,
+                ApplicationUserName = purchase.ApplicationUser.UserName,
+                ProductId = purchase.ProductId,
+                ProductName = purchase.Product.ProductInfo.Name,
+                Count = purchase.PurchaseInfo.Count,
+                Discount = purchase.PurchaseInfo.Count,
+                Sum = purchase.PurchaseInfo.Sum,
+                OrderDate = purchase.OrderDate,
+                ReceivingDate = purchase.ReceivingDate,
+                DeliveryStatus = purchase.DeliveryStatus
+            };
+
+            return View(deletePurchase);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int id)
+        {
+            PurchaseInfo purchaseInfo = _uow.PurchaseInfoRepository.FindById(id);
+            _uow.PurchaseInfoRepository.Remove(purchaseInfo);
+
+            Purchase deletedPurchase = _uow.PurchaseRepository.FindById(id);
+            _uow.PurchaseRepository.Remove(deletedPurchase);
+            _uow.SaveChanges();
+
+            return RedirectToAction("Index");
         }
     }
 }

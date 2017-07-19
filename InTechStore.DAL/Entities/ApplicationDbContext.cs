@@ -31,5 +31,6 @@ namespace InTechStore.DAL.Entities
 
         public DbSet<Purchase> Purchases { get; set; }
         public DbSet<PurchaseInfo> PurchasesInfo { get; set; }
+        public DbSet<Discount> Discounts { get; set; }
     }
 }

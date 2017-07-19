@@ -4,28 +4,24 @@
 }
 
 <h2>CreateProduct</h2>
-@using (Html.BeginForm())
+@using (Html.BeginForm("Create","Product", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
     <div class="form-horizontal">
         <div class="form-group">
-            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "label col-md-3" })
+            @Html.DisplayNameFor(model => model.Name)
             <div class="col-md-9">
                 @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.SerialNumber, htmlAttributes: new { @class = "label col-md-3" })
-            <div class="col-md-9">
-                @Html.EditorFor(model => model.SerialNumber, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.SerialNumber, "", new { @class = "text-danger" })
-            </div>
+        <div>
+            <input id="file" title="Upload a product image" type="file" name="file" />
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Count, htmlAttributes: new { @class = "label col-md-3" })
+            @Html.DisplayNameFor(model => model.Count)
             <div class="col-md-9">
                 @Html.EditorFor(model => model.Count, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Count, "", new { @class = "text-danger" })
@@ -33,7 +29,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "label col-md-3" })
+            @Html.DisplayNameFor(model => model.Price)
             <div class="col-md-9">
                 @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
@@ -41,7 +37,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "label col-md-3" })
+            @Html.DisplayNameFor(model => model.Description)
             <div class="col-md-9">
                 @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
@@ -49,7 +45,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.ManufactureDate, htmlAttributes: new { @class = "label col-md-3" })
+            @Html.DisplayNameFor(model => model.ManufactureDate)
             <div class="col-md-9">
                 @Html.EditorFor(model => model.ManufactureDate, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.ManufactureDate, "", new { @class = "text-danger" })
@@ -57,7 +53,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.LastDate, htmlAttributes: new { @class = "label col-md-3" })
+            @Html.DisplayNameFor(model => model.LastDate)
             <div class="col-md-9">
                 @Html.EditorFor(model => model.LastDate, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.LastDate, "", new { @class = "text-danger" })
@@ -66,7 +62,7 @@
 
 
         <div class="form-group">
-            @Html.LabelFor(model => model.CategoryId, htmlAttributes: new { @class = "label col-md-3" })
+            @Html.DisplayNameFor(model => model.CategoryId)
             <div class="col-md-9">
                 @Html.DropDownList("CategoryId", (IEnumerable<SelectListItem>)ViewBag.Categories, "Виберіть категорію", new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
@@ -74,7 +70,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.ProducerId, htmlAttributes: new { @class = "label col-md-3" })
+            @Html.DisplayNameFor(model => model.ProducerId)
             <div class="col-md-9">
                 @Html.DropDownList("ProducerId", (IEnumerable<SelectListItem>)ViewBag.Producers, "Виберіть виробника", new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.ProducerId, "", new { @class = "text-danger" })

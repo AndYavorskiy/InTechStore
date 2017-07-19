@@ -6,10 +6,10 @@ namespace InTechStore.WEB.ViewModels
     public class CreateProductViewModel
     {
         public string Name { get; set; }
-        public string SerialNumber { get; set; }
         public int Count { get; set; }
         public decimal Price { get; set; }
         public string Description { get; set; }
+        public string Image { get; set; }
 
         public int? CategoryId { get; set; }
         public int? ProducerId { get; set; }
@@ -25,6 +25,9 @@ namespace InTechStore.WEB.ViewModels
         public int Id { get; set; }
         public string Name { get; set; }
         public decimal Price { get; set; }
+        public bool IsInStock { get; set; }
+        public string Image { get; set; }
+
     }
 
     public class DetailsProductViewModel

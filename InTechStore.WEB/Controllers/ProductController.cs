@@ -8,12 +8,14 @@ using System.Web.Mvc;
 using InTechStore.DAL.Entities;
 using InTechStore.WEB.ViewModels;
 using System.Net;
+using InTechStore.WEB.Utils;
 
 namespace InTechStore.WEB.Controllers
 {
     public class ProductController : Controller
     {
         IUnitOfWork _uow;
+        IEnumerable<Product> _allProducts;
         IEnumerable<Product> _products;
         IEnumerable<Category> _category;
         IEnumerable<Producer> _producers;
@@ -22,7 +24,8 @@ namespace InTechStore.WEB.Controllers
         public ProductController()
         {
             _uow = new EFUnitOfWork();
-            _products = _uow.ProductRepository.Get(p => p.IsInStock = true);
+            _products = _uow.ProductRepository.Get(p => p.IsInStock == true);
+            _allProducts = _uow.ProductRepository.GetAll();
             _category = _uow.CategoryRepository.GetAll();
             _producers = _uow.ProducerRepository.GetAll();
 
@@ -33,12 +36,25 @@ namespace InTechStore.WEB.Controllers
         {
             List<ProductInfoViewModel> productInfoViewModel = new List<ProductInfoViewModel>();
 
+            string commonImage = "/Images/Common/noimagefound.jpg";
             foreach (var item in _products)
             {
-                productInfoViewModel.Add(new ProductInfoViewModel() { Id = item.Id, Name = item.ProductInfo.Name, Price = item.ProductInfo.Price });
+                productInfoViewModel.Add(new ProductInfoViewModel() { Id = item.Id, Name = item.ProductInfo.Name, Price = item.ProductInfo.Price, IsInStock = item.IsInStock, Image = item.Image ?? commonImage });
             }
 
             return View(productInfoViewModel);
+        }
+
+        public ActionResult ShowAll()
+        {
+            List<ProductInfoViewModel> productInfoViewModel = new List<ProductInfoViewModel>();
+
+            foreach (var item in _allProducts)
+            {
+                productInfoViewModel.Add(new ProductInfoViewModel() { Id = item.Id, Name = item.ProductInfo.Name, Price = item.ProductInfo.Price, IsInStock = item.IsInStock });
+            }
+
+            return View("Index", productInfoViewModel);
         }
 
         public ActionResult Details(int? id)
@@ -48,7 +64,7 @@ namespace InTechStore.WEB.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Product product = _products.Where(p => p.Id == id.Value).FirstOrDefault();
+            Product product = _allProducts.Where(p => p.Id == id.Value).FirstOrDefault();
 
             if (product == null)
             {
@@ -94,7 +110,7 @@ namespace InTechStore.WEB.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(CreateProductViewModel createdProduct)
+        public ActionResult Create(CreateProductViewModel createdProduct, HttpPostedFileBase file)
         {
             if (ModelState.IsValid)
             {
@@ -106,6 +122,11 @@ namespace InTechStore.WEB.Controllers
                     Producer = _uow.ProducerRepository.FindById(createdProduct.ProducerId.Value)
                 };
 
+                HttpPostedFileBase file2 = Request.Files["file"] as HttpPostedFileBase;
+
+                product.Image = ImageControll.SaveImage(file, ImageType.Product);
+
+
                 _uow.ProductRepository.Create(product);
                 _uow.SaveChanges();
 
@@ -113,7 +134,7 @@ namespace InTechStore.WEB.Controllers
                 {
                     Id = product.Id,
                     Name = createdProduct.Name,
-                    SerialNumber = createdProduct.SerialNumber,
+                    SerialNumber = Guid.NewGuid().ToString(),
                     Price = createdProduct.Price,
                     Description = createdProduct.Description,
                     ManufactureDate = createdProduct.ManufactureDate,
@@ -137,7 +158,7 @@ namespace InTechStore.WEB.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Product product = _products.Where(p => p.Id == id.Value).FirstOrDefault();
+            Product product = _allProducts.Where(p => p.Id == id.Value).FirstOrDefault();
 
             if (product == null)
             {
@@ -153,6 +174,8 @@ namespace InTechStore.WEB.Controllers
                 Description = product.ProductInfo.Description,
                 SerialNumber = product.ProductInfo.SerialNumber,
             };
+
+            //TODO: каскадне видалення, видаляти інші записи де зустрічається продукт
 
             return View(deleteProd);
         }
@@ -179,7 +202,7 @@ namespace InTechStore.WEB.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Product product = _products.Where(p => p.Id == id.Value).FirstOrDefault();
+            Product product = _allProducts.Where(p => p.Id == id.Value).FirstOrDefault();
 
             if (product == null)
             {
@@ -253,6 +276,10 @@ namespace InTechStore.WEB.Controllers
 
                 Product prod = _uow.ProductRepository.FindById(editableProductVM.Id);
                 prod.Count = editableProductVM.Count;
+                if (prod.Count > 0)
+                {
+                    prod.IsInStock = true;
+                }
                 prod.Producer = _uow.ProducerRepository.FindById(editableProductVM.ProducerId.Value);
 
                 _uow.ProductRepository.Update(prod);
