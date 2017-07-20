@@ -4,9 +4,16 @@
     ViewBag.Title = "Edit";
 }
 
+<style>
+    .edit-image {
+        width: 20em;
+        height: 20em;
+    }
+</style>
+
 <h2>Edit</h2>
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Edit", "Producers", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
     
@@ -40,12 +47,9 @@
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Image, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Image, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
-            </div>
+        <div class="edit-image">
+            <img src="@Model.Image" class="edit-image" />
+            <input id="file" title="Змінити картинку" type="file" name="file" />
         </div>
 
         <div class="form-group">

@@ -4,6 +4,14 @@
     ViewBag.Title = "Index";
 }
 
+<style>
+    .image-producer-index{
+        width:6em;
+        height:3em;
+        position:center center;
+    }
+</style>
+
 <h2>Index</h2>
 
 <p>
@@ -38,7 +46,7 @@
             @Html.DisplayFor(modelItem => item.Address)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Image)
+            <img src="@item.Image" class="image-producer-index" />
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |

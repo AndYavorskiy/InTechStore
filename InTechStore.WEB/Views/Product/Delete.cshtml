@@ -4,10 +4,19 @@
     ViewBag.Title = "Видалення продукту";
 }
 
+<style>
+    .details-image {
+        width: 20em;
+        height: 20em;
+    }
+</style>
+
 <h2>Видалення продукту</h2>
 <div>
     <div>Ви впевнені що хочете видалити цей робочий час?</div>
-    
+    <div class="details-image">
+        <img src="@Model.Image" class="details-image" />
+    </div>
     <div>
         <div>
             @Html.DisplayNameFor(model => model.Id)

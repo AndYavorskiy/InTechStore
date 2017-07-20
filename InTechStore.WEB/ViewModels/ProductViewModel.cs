@@ -44,6 +44,8 @@ namespace InTechStore.WEB.ViewModels
 
         public DateTime? ManufactureDate { get; set; }
         public DateTime? LastDate { get; set; }
+        public string Image { get; set; }
+
     }
 
 
@@ -55,8 +57,8 @@ namespace InTechStore.WEB.ViewModels
         public int Count { get; set; }
         public decimal Price { get; set; }
         public string Description { get; set; }
+        public string Image { get; set; }
 
-        //TODO: (delete product) show image
     }
 
 
@@ -74,7 +76,8 @@ namespace InTechStore.WEB.ViewModels
 
         public DateTime? ManufactureDate { get; set; }
         public DateTime? LastDate { get; set; }
-        //TODO: (edit product) edit image
+        public string Image { get; set; }
+
     }
 
 }

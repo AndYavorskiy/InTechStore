@@ -2,11 +2,21 @@
 @{
     ViewBag.Title = "Details";
 }
+<style>
+    .details-image {
+        width: 20em;
+        height: 20em;
+    }
+</style>
 
 <h2>Особиста інформація</h2>
 <div>
 
     @Html.HiddenFor(model => model.Id)
+
+    <div class="details-image">
+        <img src="@Model.Image" class="details-image" />
+    </div>
 
     <div>
         <div>

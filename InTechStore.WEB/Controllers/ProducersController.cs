@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using InTechStore.DAL.Entities;
+using InTechStore.WEB.Utils;
 
 namespace InTechStore.WEB.Controllers
 {
@@ -46,10 +47,13 @@ namespace InTechStore.WEB.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,CompanyName,PhoneNumber,Address,Image")] Producer producer)
+        public ActionResult Create([Bind(Include = "Id,CompanyName,PhoneNumber,Address,Image")] Producer producer, HttpPostedFileBase file)
         {
             if (ModelState.IsValid)
             {
+                HttpPostedFileBase file2 = Request.Files["file"] as HttpPostedFileBase;
+                producer.Image = ImageControll.SaveImage(file, ImageType.Producer);
+
                 db.Producers.Add(producer);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -78,10 +82,12 @@ namespace InTechStore.WEB.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,CompanyName,PhoneNumber,Address,Image")] Producer producer)
+        public ActionResult Edit([Bind(Include = "Id,CompanyName,PhoneNumber,Address")] Producer producer)
         {
             if (ModelState.IsValid)
             {
+                HttpPostedFileBase file = Request.Files["file"] as HttpPostedFileBase;
+                producer.Image = ImageControll.SaveImage(file, ImageType.Product);
                 db.Entry(producer).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

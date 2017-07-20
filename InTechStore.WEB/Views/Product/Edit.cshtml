@@ -4,10 +4,18 @@
     ViewBag.Title = "Редагування продукту";
 }
 
+<style>
+    .edit-image{
+        width: 20em;
+        height:20em;
+    }
+</style>
+
 <h2>Редагування продукту</h2>
 
 <div>
-    @using (Html.BeginForm())
+    @using (Html.BeginForm("Edit", "Product", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+
     {
         @Html.AntiForgeryToken()
 
@@ -96,6 +104,12 @@
                 @Html.ValidationMessageFor(model => model.ProducerId, "", new { @class = "text-danger" })
             </div>
         </div>
+
+        <div class="edit-image">
+            <img src="@Model.Image" class="edit-image" />
+            <input id="file" title="Змінити картинку" type="file" name="file" />
+        </div>
+
 
         @Html.ValidationSummary();
 

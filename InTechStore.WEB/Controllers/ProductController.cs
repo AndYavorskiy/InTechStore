@@ -35,11 +35,9 @@ namespace InTechStore.WEB.Controllers
         public ActionResult Index()
         {
             List<ProductInfoViewModel> productInfoViewModel = new List<ProductInfoViewModel>();
-
-            string commonImage = "/Images/Common/noimagefound.jpg";
             foreach (var item in _products)
             {
-                productInfoViewModel.Add(new ProductInfoViewModel() { Id = item.Id, Name = item.ProductInfo.Name, Price = item.ProductInfo.Price, IsInStock = item.IsInStock, Image = item.Image ?? commonImage });
+                productInfoViewModel.Add(new ProductInfoViewModel() { Id = item.Id, Name = item.ProductInfo.Name, Price = item.ProductInfo.Price, IsInStock = item.IsInStock,Image = item.Image});
             }
 
             return View(productInfoViewModel);
@@ -82,7 +80,8 @@ namespace InTechStore.WEB.Controllers
                 CategoryName = product.ProductInfo.Category.Name,
                 ManufactureDate = product.ProductInfo.ManufactureDate,
                 LastDate = product.ProductInfo.LastDate,
-                ProducerName = product.Producer.CompanyName
+                ProducerName = product.Producer.CompanyName,
+                Image = product.Image
             };
 
             return View(detailProdVM);
@@ -173,10 +172,11 @@ namespace InTechStore.WEB.Controllers
                 Price = product.ProductInfo.Price,
                 Description = product.ProductInfo.Description,
                 SerialNumber = product.ProductInfo.SerialNumber,
+                Image = product.Image
             };
 
             //TODO: каскадне видалення, видаляти інші записи де зустрічається продукт
-
+            //Товар не видаляти, помічати як unavailable
             return View(deleteProd);
         }
 
@@ -186,6 +186,7 @@ namespace InTechStore.WEB.Controllers
         {
             ProductInfo prodInf = _uow.ProductInfoRepository.FindById(id);
             _uow.ProductInfoRepository.Remove(prodInf);
+            _uow.SaveChanges();
 
             Product deletedProd = _uow.ProductRepository.FindById(id);
             _uow.ProductRepository.Remove(deletedProd);
@@ -217,6 +218,7 @@ namespace InTechStore.WEB.Controllers
                 Price = product.ProductInfo.Price,
                 Description = product.ProductInfo.Description,
                 SerialNumber = product.ProductInfo.SerialNumber,
+                Image = product.Image
             };
 
             Dictionary<string, string> categoryList = new Dictionary<string, string>();
@@ -274,7 +276,10 @@ namespace InTechStore.WEB.Controllers
 
                 _uow.ProductInfoRepository.Update(prodInf);
 
+                HttpPostedFileBase file = Request.Files["file"] as HttpPostedFileBase;
+
                 Product prod = _uow.ProductRepository.FindById(editableProductVM.Id);
+                prod.Image = ImageControll.SaveImage(file, ImageType.Product);
                 prod.Count = editableProductVM.Count;
                 if (prod.Count > 0)
                 {

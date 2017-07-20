@@ -20,8 +20,12 @@ namespace InTechStore.WEB.Utils
     {
         public static string SaveImage(HttpPostedFileBase file, ImageType imType)
         {
+            if (file == null)
+            {
+               return "/Images/Common/noimagefound.jpg";
+            }
+
             string extension = Path.GetExtension(file.FileName);
-            
 
             if (extension == ".png" || extension == ".jpeg" || extension == ".jpg")
             {
