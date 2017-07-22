@@ -37,22 +37,22 @@ namespace InTechStore.WEB.Controllers
             List<ProductInfoViewModel> productInfoViewModel = new List<ProductInfoViewModel>();
             foreach (var item in _products)
             {
-                productInfoViewModel.Add(new ProductInfoViewModel() { Id = item.Id, Name = item.ProductInfo.Name, Price = item.ProductInfo.Price, IsInStock = item.IsInStock,Image = item.Image});
+                productInfoViewModel.Add(new ProductInfoViewModel() { Id = item.Id, Name = item.ProductInfo.Name, Price = item.ProductInfo.Price, IsInStock = item.IsInStock, Image = item.Image });
             }
 
             return View(productInfoViewModel);
         }
 
-        public ActionResult ShowAll()
+        public ActionResult AllProducts()
         {
             List<ProductInfoViewModel> productInfoViewModel = new List<ProductInfoViewModel>();
 
             foreach (var item in _allProducts)
             {
-                productInfoViewModel.Add(new ProductInfoViewModel() { Id = item.Id, Name = item.ProductInfo.Name, Price = item.ProductInfo.Price, IsInStock = item.IsInStock });
+                productInfoViewModel.Add(new ProductInfoViewModel() { Id = item.Id, Name = item.ProductInfo.Name, Price = item.ProductInfo.Price, IsInStock = item.IsInStock, Image = item.Image });
             }
 
-            return View("Index", productInfoViewModel);
+            return View(productInfoViewModel);
         }
 
         public ActionResult Details(int? id)
@@ -144,7 +144,7 @@ namespace InTechStore.WEB.Controllers
                 _prodInfRepository.Create(productInfo);
                 _uow.SaveChanges();
 
-                return RedirectToAction("Index", "Product");
+                return RedirectToAction("AllProducts", "Product");
             }
             return View();
         }

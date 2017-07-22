@@ -1,0 +1,22 @@
+﻿@model  InTechStore.WEB.ViewModels.ProductInfoViewModel
+
+<div class="ui card">
+    <div class="ui image grey fluid" href="@Url.Action("Details", "Product", new { Id = Model.Id })">
+        <img src="@Model.Image" class="ui image centered" />
+    </div>
+    <div class="content">
+        <a class="header" href="@Url.Action("Details", "Product", new { Id = Model.Id })">@Model.Name</a>
+        <div class="meta">
+            <p>@Model.Price</p>
+        </div>
+    </div>
+
+    @Html.ActionLink("Деталі", "Details", new { Id = Model.Id })
+    @Html.ActionLink("Видалити", "Delete", new { Id = Model.Id })
+    @Html.ActionLink("Редагувати", "Edit", new { Id = Model.Id })
+
+    <div class="ui bottom attached button teal">
+        <i class="add icon"></i> @Html.RouteLink("Купити", new { controller = "Purchase", action = "Make", id = Model.Id }, new { @style = "color: #ffffff;" })
+    </div>
+</div>
+

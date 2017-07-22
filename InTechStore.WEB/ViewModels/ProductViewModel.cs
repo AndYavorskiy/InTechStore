@@ -1,5 +1,6 @@
 ﻿using InTechStore.DAL.Entities;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace InTechStore.WEB.ViewModels
 {
@@ -22,10 +23,15 @@ namespace InTechStore.WEB.ViewModels
 
     public class ProductInfoViewModel
     {
+        [Display(Name ="Id")]
         public int Id { get; set; }
+        [Display(Name ="Назва")]
         public string Name { get; set; }
+        [Display(Name ="Ціна")]
         public decimal Price { get; set; }
+        [Display(Name ="Доступно для замовлення")]
         public bool IsInStock { get; set; }
+        [Display(Name ="Зображення")]
         public string Image { get; set; }
 
     }

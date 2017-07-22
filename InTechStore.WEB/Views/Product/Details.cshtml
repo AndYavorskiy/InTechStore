@@ -2,93 +2,100 @@
 @{
     ViewBag.Title = "Details";
 }
-<style>
-    .details-image {
-        width: 20em;
-        height: 20em;
-    }
-</style>
-
-<h2>Особиста інформація</h2>
-<div>
-
+<div class="ui stackable two column grid container">
     @Html.HiddenFor(model => model.Id)
 
-    <div class="details-image">
-        <img src="@Model.Image" class="details-image" />
+    <div class="ui image large column">
+        <img src="@Model.Image" class="ui large image centered" />
     </div>
+    @*<div class="ui column container">
+       <div class="ui two column grid">
 
+            <div class="ui row">
+                <div class="eight wide telephone five wide computer column">
+                    @Html.DisplayNameFor(model => model.Name)
+                </div>
+                <div class="eight wide telephone eleven wide computer column">
+                    @Html.DisplayFor(model => model.Name)
+                </div>
+            </div>
+
+
+            <div class="ui row">
+                <div class="eight wide tablet five wide computer column">
+                    @Html.DisplayNameFor(model => model.Price)
+                </div>
+                <div class="eight wide tablet eleven wide computer column">
+                    @Html.DisplayFor(model => model.Price)
+                </div>
+            </div>
+
+            <div class="ui row">
+                <div class="eight wide tablet five wide computer column">
+                    @Html.DisplayNameFor(model => model.Description)
+                </div>
+                <div class="eight wide tablet eleven wide computer column">
+                    @Html.DisplayFor(model => model.Description)
+                </div>
+            </div>
+
+            <div class="ui row">
+                <div class="eight wide tablet five wide computer column">
+                    @Html.DisplayNameFor(model => model.CategoryName)
+                </div>
+                <div class="eight wide tablet eleven wide computer column">
+                    @Html.DisplayFor(model => model.CategoryName)
+                </div>
+            </div>
+
+            <div class="ui row">
+                <div class="eight wide tablet five wide computer column">
+                    @Html.DisplayNameFor(model => model.ProducerName)
+                </div>
+                <div class="eight wide tablet eleven wide computer column">
+                    @Html.DisplayFor(model => model.ProducerName)
+                </div>
+            </div>
+
+        </div>
+
+    </div>*@
+
+    <div class="ui column container centered middle aligned content">
+
+        <table class="ui definition table">
+            <tbody>
+                <tr>
+                    <td class="three wide column">@Html.DisplayNameFor(model => model.Name)</td>
+                    <td>@Html.DisplayFor(model => model.Name)</td>
+                </tr>
+                <tr>
+                    <td>@Html.DisplayNameFor(model => model.Price)</td>
+                    <td>@Html.DisplayFor(model => model.Price)</td>
+                </tr>
+                <tr>
+                    <td>@Html.DisplayNameFor(model => model.Description)</td>
+                    <td>@Html.DisplayFor(model => model.Description)</td>
+                </tr>
+                <tr>
+                    <td>@Html.DisplayNameFor(model => model.CategoryName)</td>
+                    <td>@Html.DisplayFor(model => model.CategoryName)</td>
+                </tr>
+                <tr>
+                    <td>@Html.DisplayNameFor(model => model.ProducerName)</td>
+                    <td>@Html.DisplayFor(model => model.ProducerName)</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<div>
     <div>
-        <div>
-            @Html.DisplayNameFor(model => model.Name)
-        </div>
-        <div>
-            @Html.DisplayFor(model => model.Name)
-        </div>
+        @Html.RouteLink("Купити", new { controller = "Purchase", action = "Make", id = Model.Id })
     </div>
-
     <div>
-        <div>
-            @Html.DisplayNameFor(model => model.SerialNumber)
-        </div>
-        <div>
-            @Html.DisplayFor(model => model.SerialNumber)
-        </div>
+        @Html.ActionLink("Повернутись до списку товарів", "Index")
     </div>
-
-    <div>
-        <div>
-            @Html.DisplayNameFor(model => model.Count)
-        </div>
-        <div>
-            @Html.DisplayFor(model => model.Count)
-        </div>
-    </div>
-
-    <div>
-        <div>
-            @Html.DisplayNameFor(model => model.Price)
-        </div>
-        <div>
-            @Html.DisplayFor(model => model.Price)
-        </div>
-    </div>
-
-    <div>
-        <div>
-            @Html.DisplayNameFor(model => model.Description)
-        </div>
-        <div>
-            @Html.DisplayFor(model => model.Description)
-        </div>
-    </div>
-
-    <div>
-        <div>
-            @Html.DisplayNameFor(model => model.CategoryName)
-        </div>
-        <div>
-            @Html.DisplayFor(model => model.CategoryName)
-        </div>
-    </div>
-
-    <div>
-        <div>
-            @Html.DisplayNameFor(model => model.ProducerName)
-        </div>
-        <div>
-            @Html.DisplayFor(model => model.ProducerName)
-        </div>
-    </div>
-
-    <div>
-        @*<div>
-            @Html.ActionLink("Купити", "Make","Order")
-        </div>*@
-        <div>
-            @Html.ActionLink("Назад", "Index")
-        </div>
-    </div>
-
-
 </div>
