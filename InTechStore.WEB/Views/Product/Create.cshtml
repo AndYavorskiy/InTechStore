@@ -3,85 +3,126 @@
     ViewBag.Title = "CreateProduct";
 }
 
-<h2>CreateProduct</h2>
-@using (Html.BeginForm("Create","Product", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
-    @Html.AntiForgeryToken()
-    <div class="form-horizontal">
-        <div class="form-group">
-            @Html.DisplayNameFor(model => model.Name)
-            <div class="col-md-9">
+<div class="ui container">
+
+    @using (Html.BeginForm("Create", "Product", null, FormMethod.Post, new { enctype = "multipart/form-data", @class = "ui form segment" }))
+    {
+        <h1 class="ui text header">Додати товар</h1>
+        @Html.AntiForgeryToken()
+
+        <div class="required field ">
+            <label>
+                @Html.DisplayNameFor(model => model.Name)
+            </label>
+            <div>
                 @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.Name, null, new { @class = " " })
             </div>
         </div>
 
-        <div>
+        <div class="field">
             <input id="file" title="Upload a product image" type="file" name="file" />
         </div>
 
-        <div class="form-group">
-            @Html.DisplayNameFor(model => model.Count)
-            <div class="col-md-9">
+        <div class="required field">
+            <label>
+                @Html.DisplayNameFor(model => model.Count)
+            </label>
+            <div>
                 @Html.EditorFor(model => model.Count, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Count, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.Count, null, htmlAttributes: new { @class = "" })
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.DisplayNameFor(model => model.Price)
-            <div class="col-md-9">
-                @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+        <div class="required field">
+            <label>
+                @Html.DisplayNameFor(model => model.Price)
+            </label>
+            <div>
+                <div class="ui left labeled input">
+                    <label class="ui label" for="amount">&#x20b4</label>
+                    @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "ui right labeled input" } })
+                </div>
+                @Html.ValidationMessageFor(model => model.Price, null, new { @class = " " })
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.DisplayNameFor(model => model.Description)
-            <div class="col-md-9">
-                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+        <div class="field">
+            <label>
+                @Html.DisplayNameFor(model => model.Description)
+            </label>
+            <div>
+                @Html.EditorFor(model => model.Description)
+                @Html.ValidationMessageFor(model => model.Description, null, new { @class = "" })
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.DisplayNameFor(model => model.ManufactureDate)
-            <div class="col-md-9">
-                @Html.EditorFor(model => model.ManufactureDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ManufactureDate, "", new { @class = "text-danger" })
+        <div class="field">
+            <label>
+                @Html.DisplayNameFor(model => model.ManufactureDate)
+            </label>
+            <div>
+                @Html.EditorFor(model => model.ManufactureDate)
+                @Html.ValidationMessageFor(model => model.ManufactureDate, null, new { @class = "" })
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.DisplayNameFor(model => model.LastDate)
-            <div class="col-md-9">
-                @Html.EditorFor(model => model.LastDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.LastDate, "", new { @class = "text-danger" })
+            <div class="field">
+                <label>
+                    @Html.DisplayNameFor(model => model.LastDate)
+                </label>
+                <div>
+                    @Html.EditorFor(model => model.LastDate, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.LastDate, null, new { @class = "" })
+                </div>
             </div>
+
+            <div class="required field">
+                <label>
+                    @Html.DisplayNameFor(model => model.CategoryId)
+                </label>
+                <select name="CategoryId" class="ui dropdown" id="select">
+                    <option value="">Виберіть категорію</option>
+                    @foreach (var item in (IEnumerable<SelectListItem>)ViewBag.Categories)
+                    {
+                        <option value=@item.Value>@item.Text</option>
+                    }
+                </select>
+            </div>
+
+
+            <div class="required field">
+                <label>
+                    @Html.DisplayNameFor(model => model.ProducerId)
+                </label>
+                <select name="ProducerId" class="ui dropdown" id="select">
+                    <option value="">Виберіть виробника</option>
+                    @foreach (var item in (IEnumerable<SelectListItem>)ViewBag.Producers)
+                    {
+                        <option value=@item.Value>@item.Text</option>
+                    }
+                </select>
+            </div>
+
+            @Html.ValidationSummary(true);
+
+        <div>
+            @Html.ActionLink("Назад", "AllProducts", null, new { @class = "ui button primary" })
+            <input type="submit" value="Створити" class="ui button positive" />
         </div>
 
-
-        <div class="form-group">
-            @Html.DisplayNameFor(model => model.CategoryId)
-            <div class="col-md-9">
-                @Html.DropDownList("CategoryId", (IEnumerable<SelectListItem>)ViewBag.Categories, "Виберіть категорію", new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.DisplayNameFor(model => model.ProducerId)
-            <div class="col-md-9">
-                @Html.DropDownList("ProducerId", (IEnumerable<SelectListItem>)ViewBag.Producers, "Виберіть виробника", new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.ProducerId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-
-    </div>
+    }
+</div>
 
 
 
-        @Html.ValidationSummary();
-    <input type="submit" value="Створити" />
+@section scripts{
+    <script>
+        $('select.dropdown')
+            .dropdown()
+            ;
+        $('#select')
+            .dropdown()
+            ;
+    </script>
 }

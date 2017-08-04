@@ -1,54 +1,54 @@
 ﻿@model InTechStore.DAL.Entities.Producer
-
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Додати виробника";
 }
 
-<h2>Create</h2>
-@using (Html.BeginForm("Create", "Producers", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Producer</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.CompanyName, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.CompanyName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.CompanyName, "", new { @class = "text-danger" })
+<div class="ui container">
+
+    @using (Html.BeginForm("Create", "Producers", null, FormMethod.Post, new { enctype = "multipart/form-data", @class = "ui form segment" }))
+    {
+        <h1 class="ui text header">Додати виробника</h1>
+        @Html.AntiForgeryToken()
+
+        <div class="required field ">
+            <label>
+                @Html.LabelFor(model => model.CompanyName)
+            </label>
+            <div>
+                @Html.EditorFor(model => model.CompanyName)
+                @Html.ValidationMessageFor(model => model.CompanyName)
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.PhoneNumber, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+        <div class="field">
+            <label>
+                @Html.LabelFor(model => model.PhoneNumber)
+            </label>
+            <div>
+                @Html.EditorFor(model => model.PhoneNumber)
+                @Html.ValidationMessageFor(model => model.PhoneNumber)
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+        <div class="field">
+            <label>
+                @Html.LabelFor(model => model.Address)
+            </label>
+            <div>
+                @Html.EditorFor(model => model.Address)
+                @Html.ValidationMessageFor(model => model.Address)
             </div>
         </div>
+
+        <div class="field">
+            <input id="file" title="Upload a producer image" type="file" name="file" />
+        </div>
+
+        @Html.ValidationSummary(true)
 
         <div>
-            <input id="file" title="Upload a product image" type="file" name="file" />
+            @Html.ActionLink("Назад", "Index", null, new { @class = "ui button primary" })
+            <input type="submit" value="Створити" class="ui button positive" />
         </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </div>
-    </div>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
+    }
 </div>

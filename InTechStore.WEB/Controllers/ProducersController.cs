@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -8,17 +6,27 @@ using System.Web;
 using System.Web.Mvc;
 using InTechStore.DAL.Entities;
 using InTechStore.WEB.Utils;
+using InTechStore.DAL.Interfaces;
+using InTechStore.DAL.Repositories;
 
 namespace InTechStore.WEB.Controllers
 {
     public class ProducersController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        IUnitOfWork _uow;
+        IGenericRepository<Producer> _producerRepository;
+        IEnumerable<Producer> _producers;
+        public ProducersController()
+        {
+            _uow = new EFUnitOfWork();
+            _producerRepository = _uow.ProducerRepository;
+            _producers = _producerRepository.GetAll();
+        }
 
         // GET: Producers
         public ActionResult Index()
         {
-            return View(db.Producers.ToList());
+            return View(_producers);
         }
 
         // GET: Producers/Details/5
@@ -28,7 +36,7 @@ namespace InTechStore.WEB.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Producer producer = db.Producers.Find(id);
+            Producer producer = _producerRepository.FindById(id.Value);
             if (producer == null)
             {
                 return HttpNotFound();
@@ -36,15 +44,12 @@ namespace InTechStore.WEB.Controllers
             return View(producer);
         }
 
-        // GET: Producers/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Producers/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,CompanyName,PhoneNumber,Address,Image")] Producer producer, HttpPostedFileBase file)
@@ -54,22 +59,21 @@ namespace InTechStore.WEB.Controllers
                 HttpPostedFileBase file2 = Request.Files["file"] as HttpPostedFileBase;
                 producer.Image = ImageControll.SaveImage(file, ImageType.Producer);
 
-                db.Producers.Add(producer);
-                db.SaveChanges();
+               _producerRepository.Create(producer);
+                _uow.SaveChanges();
                 return RedirectToAction("Index");
             }
 
             return View(producer);
         }
 
-        // GET: Producers/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Producer producer = db.Producers.Find(id);
+            Producer producer = _producerRepository.FindById(id.Value);
             if (producer == null)
             {
                 return HttpNotFound();
@@ -86,10 +90,18 @@ namespace InTechStore.WEB.Controllers
         {
             if (ModelState.IsValid)
             {
+                Producer prod = _producerRepository.FindById(producer.Id);
+                prod.CompanyName = producer.CompanyName;
+                prod.Address = producer.Address;
+                prod.PhoneNumber = producer.PhoneNumber;
+
                 HttpPostedFileBase file = Request.Files["file"] as HttpPostedFileBase;
-                producer.Image = ImageControll.SaveImage(file, ImageType.Product);
-                db.Entry(producer).State = EntityState.Modified;
-                db.SaveChanges();
+                if (!string.IsNullOrEmpty(file.FileName))
+                {
+                    prod.Image = ImageControll.SaveImage(file, ImageType.Producer);
+                }
+                _producerRepository.Update(prod);
+                _uow.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(producer);
@@ -102,7 +114,7 @@ namespace InTechStore.WEB.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Producer producer = db.Producers.Find(id);
+            Producer producer = _producerRepository.FindById(id.Value);
             if (producer == null)
             {
                 return HttpNotFound();
@@ -115,9 +127,9 @@ namespace InTechStore.WEB.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Producer producer = db.Producers.Find(id);
-            db.Producers.Remove(producer);
-            db.SaveChanges();
+            Producer producer = _producerRepository.FindById(id);
+            _producerRepository.Remove(producer);
+            _uow.SaveChanges();
             return RedirectToAction("Index");
         }
 
@@ -125,7 +137,7 @@ namespace InTechStore.WEB.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _uow.Dispose();
             }
             base.Dispose(disposing);
         }

@@ -1,35 +1,33 @@
-﻿@model InTechStore.DAL.Entities.Category
+﻿@model InTechStore.WEB.ViewModels.CreateCategoryViewModel
 
 @{
     ViewBag.Title = "Create";
 }
 
-<h2>Create</h2>
+<div class="ui container">
+    @using (Html.BeginForm("Create", "Categories", null, FormMethod.Post, htmlAttributes: new { @class = "ui form segment" }))
+    {
+        <h1 class="ui text header">Додати категорію товару</h1>
+        @Html.AntiForgeryToken()
 
-@using (Html.BeginForm()) 
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Category</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+        <div class="required field">
+            <label>
+                @Html.LabelFor(model => model.Name)
+            </label>
+            <div>
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "" })
             </div>
         </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </div>
-    </div>
-}
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
+        @Html.ValidationSummary(true);
+
+        <div>
+            @Html.ActionLink("Назад", "Index", null, new { @class = "ui button primary" })
+            <input type="submit" value="Створити" class="ui button positive" />
+        </div>
+    }
+
+
 </div>

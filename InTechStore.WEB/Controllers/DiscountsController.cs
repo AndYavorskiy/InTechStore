@@ -7,43 +7,32 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using InTechStore.DAL.Entities;
+using InTechStore.DAL.Interfaces;
+using InTechStore.DAL.Repositories;
 
 namespace InTechStore.WEB.Controllers
 {
     public class DiscountsController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        IUnitOfWork _uow;
+        IGenericRepository<Discount> _discountRepository;
 
-        // GET: Discounts
+        public DiscountsController()
+        {
+            _uow = new EFUnitOfWork();
+            _discountRepository = _uow.DiscountRepository;
+        }
+
         public ActionResult Index()
         {
-            return View(db.Discounts.ToList());
+            return View(_discountRepository.GetAll());
         }
 
-        // GET: Discounts/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Discount discount = db.Discounts.Find(id);
-            if (discount == null)
-            {
-                return HttpNotFound();
-            }
-            return View(discount);
-        }
-
-        // GET: Discounts/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Discounts/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Value")] Discount discount)
@@ -51,53 +40,20 @@ namespace InTechStore.WEB.Controllers
             if (ModelState.IsValid)
             {
                 discount.Code = Guid.NewGuid().ToString();
-                db.Discounts.Add(discount);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            return View(discount);
-        }
-
-        // GET: Discounts/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Discount discount = db.Discounts.Find(id);
-            if (discount == null)
-            {
-                return HttpNotFound();
-            }
-            return View(discount);
-        }
-
-        // POST: Discounts/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Value,Code")] Discount discount)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(discount).State = EntityState.Modified;
-                db.SaveChanges();
+                _discountRepository.Create(discount);
+                _uow.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(discount);
         }
 
-        // GET: Discounts/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Discount discount = db.Discounts.Find(id);
+            Discount discount = _discountRepository.FindById(id.Value);
             if (discount == null)
             {
                 return HttpNotFound();
@@ -105,14 +61,13 @@ namespace InTechStore.WEB.Controllers
             return View(discount);
         }
 
-        // POST: Discounts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Discount discount = db.Discounts.Find(id);
-            db.Discounts.Remove(discount);
-            db.SaveChanges();
+            Discount discount = _discountRepository.FindById(id);
+            _discountRepository.Remove(discount);
+            _uow.SaveChanges();
             return RedirectToAction("Index");
         }
 
@@ -120,7 +75,7 @@ namespace InTechStore.WEB.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _uow.Dispose();
             }
             base.Dispose(disposing);
         }

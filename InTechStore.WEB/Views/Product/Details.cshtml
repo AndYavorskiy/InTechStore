@@ -9,57 +9,57 @@
         <img src="@Model.Image" class="ui large image centered" />
     </div>
     @*<div class="ui column container">
-       <div class="ui two column grid">
+           <div class="ui two column grid">
 
-            <div class="ui row">
-                <div class="eight wide telephone five wide computer column">
-                    @Html.DisplayNameFor(model => model.Name)
+                <div class="ui row">
+                    <div class="eight wide telephone five wide computer column">
+                        @Html.DisplayNameFor(model => model.Name)
+                    </div>
+                    <div class="eight wide telephone eleven wide computer column">
+                        @Html.DisplayFor(model => model.Name)
+                    </div>
                 </div>
-                <div class="eight wide telephone eleven wide computer column">
-                    @Html.DisplayFor(model => model.Name)
+
+
+                <div class="ui row">
+                    <div class="eight wide tablet five wide computer column">
+                        @Html.DisplayNameFor(model => model.Price)
+                    </div>
+                    <div class="eight wide tablet eleven wide computer column">
+                        @Html.DisplayFor(model => model.Price)
+                    </div>
                 </div>
+
+                <div class="ui row">
+                    <div class="eight wide tablet five wide computer column">
+                        @Html.DisplayNameFor(model => model.Description)
+                    </div>
+                    <div class="eight wide tablet eleven wide computer column">
+                        @Html.DisplayFor(model => model.Description)
+                    </div>
+                </div>
+
+                <div class="ui row">
+                    <div class="eight wide tablet five wide computer column">
+                        @Html.DisplayNameFor(model => model.CategoryName)
+                    </div>
+                    <div class="eight wide tablet eleven wide computer column">
+                        @Html.DisplayFor(model => model.CategoryName)
+                    </div>
+                </div>
+
+                <div class="ui row">
+                    <div class="eight wide tablet five wide computer column">
+                        @Html.DisplayNameFor(model => model.ProducerName)
+                    </div>
+                    <div class="eight wide tablet eleven wide computer column">
+                        @Html.DisplayFor(model => model.ProducerName)
+                    </div>
+                </div>
+
             </div>
 
-
-            <div class="ui row">
-                <div class="eight wide tablet five wide computer column">
-                    @Html.DisplayNameFor(model => model.Price)
-                </div>
-                <div class="eight wide tablet eleven wide computer column">
-                    @Html.DisplayFor(model => model.Price)
-                </div>
-            </div>
-
-            <div class="ui row">
-                <div class="eight wide tablet five wide computer column">
-                    @Html.DisplayNameFor(model => model.Description)
-                </div>
-                <div class="eight wide tablet eleven wide computer column">
-                    @Html.DisplayFor(model => model.Description)
-                </div>
-            </div>
-
-            <div class="ui row">
-                <div class="eight wide tablet five wide computer column">
-                    @Html.DisplayNameFor(model => model.CategoryName)
-                </div>
-                <div class="eight wide tablet eleven wide computer column">
-                    @Html.DisplayFor(model => model.CategoryName)
-                </div>
-            </div>
-
-            <div class="ui row">
-                <div class="eight wide tablet five wide computer column">
-                    @Html.DisplayNameFor(model => model.ProducerName)
-                </div>
-                <div class="eight wide tablet eleven wide computer column">
-                    @Html.DisplayFor(model => model.ProducerName)
-                </div>
-            </div>
-
-        </div>
-
-    </div>*@
+        </div>*@
 
     <div class="ui column container centered middle aligned content">
 
@@ -88,14 +88,16 @@
             </tbody>
         </table>
     </div>
+
+    <div class="ui column">
+        @Html.ActionLink("Назад до списку товарів", "Index", null, htmlAttributes: new { @class = "ui button button-text" })
+    </div>
+
+    <div class="ui column">
+        @Html.RouteLink("Купити", new { controller = "Purchase", action = "Make", id = Model.Id }, htmlAttributes: new { @class = "ui button positive" })
+    </div>
+
+
 </div>
 
 
-<div>
-    <div>
-        @Html.RouteLink("Купити", new { controller = "Purchase", action = "Make", id = Model.Id })
-    </div>
-    <div>
-        @Html.ActionLink("Повернутись до списку товарів", "Index")
-    </div>
-</div>

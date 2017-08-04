@@ -4,81 +4,63 @@
     ViewBag.Title = "Видалення продукту";
 }
 
-<style>
-    .details-image {
-        width: 20em;
-        height: 20em;
-    }
-</style>
+<div class="ui stackable two column grid container">
 
-<h2>Видалення продукту</h2>
-<div>
-    <div>Ви впевнені що хочете видалити цей робочий час?</div>
-    <div class="details-image">
-        <img src="@Model.Image" class="details-image" />
-    </div>
-    <div>
-        <div>
-            @Html.DisplayNameFor(model => model.Id)
-        </div>
-        <div>
-            @Html.DisplayFor(model => model.Id)
-        </div>
+    <div class="ui image large column">
+        <img src="@Model.Image" class="ui large image centered" />
     </div>
 
-    <div>
-        <div>
-            @Html.DisplayNameFor(model => model.Name)
-        </div>
-        <div>
-            @Html.DisplayFor(model => model.Name)
-        </div>
+    <div class="ui column container centered middle aligned content">
+
+        <table class="ui definition table">
+            <tbody>
+                <tr>
+                    <td class="three wide column">@Html.DisplayNameFor(model => model.Id)</td>
+                    <td>@Html.DisplayFor(model => model.Id)</td>
+                </tr>
+                <tr>
+                    <td>@Html.DisplayNameFor(model => model.Name)</td>
+                    <td>@Html.DisplayFor(model => model.Name)</td>
+                </tr>
+                <tr>
+                    <td>@Html.DisplayNameFor(model => model.SerialNumber)</td>
+                    <td>@Html.DisplayFor(model => model.SerialNumber)</td>
+                </tr>
+                <tr>
+                    <td>@Html.DisplayNameFor(model => model.Count)</td>
+                    <td>@Html.DisplayFor(model => model.Count)</td>
+                </tr>
+                <tr>
+                    <td>@Html.DisplayNameFor(model => model.Price)</td>
+                    <td>@Html.DisplayFor(model => model.Price)</td>
+                </tr>
+                <tr>
+                    <td>@Html.DisplayNameFor(model => model.Description)</td>
+                    <td>@Html.DisplayFor(model => model.Description)</td>
+                </tr>
+                <tr>
+                    <td>@Html.DisplayNameFor(model => model.CategoryName)</td>
+                    <td>@Html.DisplayFor(model => model.CategoryName)</td>
+                </tr>
+                <tr>
+                    <td>@Html.DisplayNameFor(model => model.ProducerName)</td>
+                    <td>@Html.DisplayFor(model => model.ProducerName)</td>
+                </tr>
+            </tbody>
+        </table>
+
     </div>
 
-    <div>
-        <div>
-            @Html.DisplayNameFor(model => model.SerialNumber)
-        </div>
-        <div>
-            @Html.DisplayFor(model => model.SerialNumber)
-        </div>
-    </div>
-
-    <div>
-        <div>
-            @Html.DisplayNameFor(model => model.Count)
-        </div>
-        <div>
-            @Html.DisplayFor(model => model.Count)
-        </div>
-    </div>
-
-    <div>
-        <div>
-            @Html.DisplayNameFor(model => model.Price)
-        </div>
-        <div>
-            @Html.DisplayFor(model => model.Price)
-        </div>
-    </div>
-
-    <div>
-        <div>
-            @Html.DisplayNameFor(model => model.Description)
-        </div>
-        <div>
-            @Html.DisplayFor(model => model.Description)
-        </div>
+    <div class="ui column">
+        @Html.ActionLink("< Назад до товарів", "AllProducts", null, htmlAttributes: new { @class = "ui button primary" })
     </div>
 
     @using (Html.BeginForm())
     {
         @Html.AntiForgeryToken()
-
-        <div>
-            @Html.ActionLink("< Назад до таблиці", "Index")
-            <input type="submit" value="Видалити"/>
+        <div class="ui column">
+            <input class="ui button negative" type="submit" value="Видалити" />
         </div>
     }
-</div>
 
+</div>

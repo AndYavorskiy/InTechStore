@@ -1,21 +1,31 @@
-﻿@model  IEnumerable<InTechStore.WEB.ViewModels.ProductInfoViewModel>
+﻿@model  IEnumerable<InTechStore.WEB.ViewModels.AllProductsInfoViewModel>
 
 @{
     ViewBag.Title = "Index";
 }
-<div class="ui container">
+<div class="ui content">
     <div class="ui header">Всі товари</div>
-    @Html.ActionLink("Додати товар", "Create")
 
-    <table class="ui padded table">
+    <div class="ui blue button">
+        <i class="plus icon"></i>
+        @Html.ActionLink("Додати товар", "Create", routeValues: null, htmlAttributes: new { @style = "color: white;" })
+    </div>
+
+
+    <table class="ui fixed single line celled table">
         <thead>
             <tr>
                 <th>@Html.DisplayNameFor(model => model.Id)</th>
                 <th>@Html.DisplayNameFor(model => model.Image)</th>
                 <th>@Html.DisplayNameFor(model => model.Name)</th>
                 <th>@Html.DisplayNameFor(model => model.Price)</th>
+                <th>@Html.DisplayNameFor(model => model.Count)</th>
                 <th>@Html.DisplayNameFor(model => model.IsInStock)</th>
-                <th></th>
+                <th>@Html.DisplayNameFor(model => model.SerialNumber)</th>
+
+                <th>@Html.DisplayNameFor(model => model.CategoryId)</th>
+                <th>@Html.DisplayNameFor(model => model.ProducerId)</th>
+                <th class="ui collapsing"></th>
             </tr>
         </thead>
         <tbody>
@@ -25,14 +35,26 @@
                 {
                     <tr>
                         <td>@Html.DisplayFor(Item => item.Id)</td>
-                        <td><img src="@item.Image" class="ui mini image" /></td>
+                        <td><img src="@item.Image"class="ui tiny image centered" /></td>
                         <td>@Html.DisplayFor(Item => item.Name)</td>
                         <td>@Html.DisplayFor(Item => item.Price)</td>
+                        <td>@Html.DisplayFor(Item => item.Count)</td>
                         <td> @Html.DisplayFor(Item => item.IsInStock)</td>
+                        <td> @Html.DisplayFor(Item => item.SerialNumber)</td>
+                        <td> @Html.DisplayFor(Item => item.CategoryId)</td>
+                        <td> @Html.DisplayFor(Item => item.ProducerId)</td>
                         <td>
-                            @Html.ActionLink("Деталі", "Details", new { Id = item.Id }) |
-                            @Html.ActionLink("Видалити", "Delete", new { Id = item.Id }) |
-                            @Html.ActionLink("Редагувати", "Edit", new { Id = item.Id })
+                            <div class="ui compact buttons">
+                                <a href=@Url.Action("Details", new { id = item.Id }) class="ui icon blue button">
+                                    <i class="info  icon"></i>
+                                </a>
+                                <a href=@Url.Action("Edit", new { id = item.Id }) class="ui icon yellow button">
+                                    <i class="edit icon"></i>
+                                </a>
+                                <a href=@Url.Action("Delete",new { id = item.Id }) class="ui icon red button">
+                                    <i class="remove icon"></i>
+                                </a>
+                            </div>
                         </td>
                     </tr>
 
@@ -41,14 +63,28 @@
                 {
                     <tr class="negative">
                         <td>@Html.DisplayFor(Item => item.Id)</td>
-                        <td><img src="@item.Image" class="ui mini image" /></td>
+                        <td><img src="@item.Image" class="ui tiny image centered" /></td>
                         <td>@Html.DisplayFor(Item => item.Name)</td>
                         <td>@Html.DisplayFor(Item => item.Price)</td>
+                        <td>@Html.DisplayFor(Item => item.Count)</td>
                         <td> @Html.DisplayFor(Item => item.IsInStock)</td>
+                        <td> @Html.DisplayFor(Item => item.SerialNumber)</td>
+                        <td> @Html.DisplayFor(Item => item.CategoryId)</td>
+                        <td> @Html.DisplayFor(Item => item.ProducerId)</td>
+                        <td> @Html.DisplayFor(Item => item.ManufactureDate)</td>
+                        <td> @Html.DisplayFor(Item => item.LastDate)</td>
                         <td>
-                            @Html.ActionLink("Деталі", "Details", new { Id = item.Id }) |
-                            @Html.ActionLink("Видалити", "Delete", new { Id = item.Id }) |
-                            @Html.ActionLink("Редагувати", "Edit", new { Id = item.Id })
+                            <div class="ui compact buttons">
+                                <a href=@Url.Action("Details", new { id = item.Id }) class="ui icon blue button">
+                                    <i class="info  icon"></i>
+                                </a>
+                                <a href=@Url.Action("Edit", new { id = item.Id }) class="ui icon yellow button">
+                                    <i class="edit icon"></i>
+                                </a>
+                                <a href=@Url.Action("Delete",new { id = item.Id }) class="ui icon red button">
+                                    <i class="remove icon"></i>
+                                </a>
+                            </div>
                         </td>
                     </tr>
                 }

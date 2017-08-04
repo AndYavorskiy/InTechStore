@@ -8,20 +8,29 @@ using System.Web;
 using System.Web.Mvc;
 using InTechStore.DAL.Entities;
 using InTechStore.WEB.ViewModels;
+using InTechStore.DAL.Interfaces;
+using InTechStore.DAL.Repositories;
 
 namespace InTechStore.WEB.Controllers
 {
     public class CategoriesController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        IUnitOfWork _uow;
+        IGenericRepository<Category> _categoryRepository;
+
+        public CategoriesController()
+        {
+            _uow = new EFUnitOfWork();
+            _categoryRepository = _uow.CategoryRepository;
+        }
 
         // GET: Categories
         public ActionResult Index()
         {
             List<DetailsCategoryViewModel> categories = new List<DetailsCategoryViewModel>();
-            foreach (var item in db.Categorys.ToList())
+            foreach (var item in _categoryRepository.GetAll())
             {
-                categories.Add(new DetailsCategoryViewModel() {Id=item.Id,Name = item.Name });
+                categories.Add(new DetailsCategoryViewModel() { Id = item.Id, Name = item.Name });
             }
 
 
@@ -29,19 +38,19 @@ namespace InTechStore.WEB.Controllers
         }
 
         // GET: Categories/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Category category = db.Categorys.Find(id);
-            if (category == null)
-            {
-                return HttpNotFound();
-            }
-            return View(category);
-        }
+        //public ActionResult Details(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    Category category = _categoryRepository.FindById(id.Value);
+        //    if (category == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    return View(category);
+        //}
 
         // GET: Categories/Create
         public ActionResult Create()
@@ -51,12 +60,13 @@ namespace InTechStore.WEB.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name")] Category category)
+        public ActionResult Create(CreateCategoryViewModel category)
         {
             if (ModelState.IsValid)
             {
-                db.Categorys.Add(category);
-                db.SaveChanges();
+                Category categ = new Category() { Name = category.Name };
+                _categoryRepository.Create(categ);
+                _uow.SaveChanges();
                 return RedirectToAction("Index");
             }
 
@@ -70,22 +80,33 @@ namespace InTechStore.WEB.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Category category = db.Categorys.Find(id);
+            Category category = _categoryRepository.FindById(id.Value);
             if (category == null)
             {
                 return HttpNotFound();
             }
-            return View(category);
+            EditeCategoryViewModel editeCategory = new EditeCategoryViewModel()
+            {
+                Id = category.Id,
+                Name = category.Name
+            };
+            return View(editeCategory);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name")] Category category)
+        public ActionResult Edit([Bind(Include = "Id,Name")] EditeCategoryViewModel category)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(category).State = EntityState.Modified;
-                db.SaveChanges();
+                Category categ = _categoryRepository.GetAll().Where(c => c.Id == category.Id).FirstOrDefault();
+                if (categ == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.NotModified);
+                }
+                categ.Name = category.Name;
+                _categoryRepository.Update(categ);
+                _uow.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(category);
@@ -98,7 +119,7 @@ namespace InTechStore.WEB.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Category category = db.Categorys.Find(id);
+            Category category = _categoryRepository.FindById(id.Value);
             if (category == null)
             {
                 return HttpNotFound();
@@ -111,9 +132,9 @@ namespace InTechStore.WEB.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Category category = db.Categorys.Find(id);
-            db.Categorys.Remove(category);
-            db.SaveChanges();
+            Category category = _categoryRepository.FindById(id);
+            _categoryRepository.Remove(category);
+            _uow.SaveChanges();
             return RedirectToAction("Index");
         }
 
@@ -121,7 +142,7 @@ namespace InTechStore.WEB.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _uow.Dispose();
             }
             base.Dispose(disposing);
         }

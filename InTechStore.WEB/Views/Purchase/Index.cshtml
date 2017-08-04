@@ -3,80 +3,97 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<div class="ui content">
+    <div class="ui header">Покупки</div>
 
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Id)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ApplicationUserName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ProductId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ProductName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Count)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Discount)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Sum)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.OrderDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ReceivingDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DeliveryStatus)
-        </th>
-        <th></th>
-    </tr>
+    <table class="ui fixed single line celled table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Id)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ApplicationUserName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ProductId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ProductName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Count)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Discount)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Sum)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.OrderDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ReceivingDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DeliveryStatus)
+                </th>
+                <th class="ui collapsing"></th>
+            </tr>
+            </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(model => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.ApplicationUserName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.ProductId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.ProductName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.Count)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.Discount)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.Sum)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.OrderDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.ReceivingDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.DeliveryStatus)
+                    </td>
+                    <td>
+                        <div class="ui compact buttons">
+                            @*<a href=@Url.Action("Details", new { id = item.Id }) class="ui icon blue button">
+                                <i class="info  icon"></i>
+                            </a>
+                            <a href=@Url.Action("Edit", new { id = item.Id }) class="ui icon yellow button">
+                                <i class="edit icon"></i>
+                            </a>*@
+                            <a href=@Url.Action("Delete",new { id = item.Id }) class="ui icon red button">
+                                <i class="remove icon"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(model => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.ApplicationUserName)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.ProductId)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.ProductName)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Count)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Discount)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.Sum)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.OrderDate)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.ReceivingDate)
-            </td>
-            <td>
-                @Html.DisplayFor(model => item.DeliveryStatus)
-            </td>
-            <td>
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-            </td>
-        </tr>
-    }
+</div>
 
-</table>
+    

@@ -3,36 +3,43 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
 
 </head>
 <body>
     <div class="ui menu fixed">
 
-            @Html.ActionLink("Home", "Index", "Home", null, new { @class = "item" })
-            @Html.ActionLink("About", "About", "Home", null, new { @class = "item" })
-            @Html.ActionLink("Contact", "Contact", "Home", null, new { @class = "item" })
-            @Html.ActionLink("Products", "Index", "Product", null, new { @class = "item" })
-            @Html.ActionLink("Categories", "Index", "Categories", null, new { @class = "item" })
-            @Html.ActionLink("Producers", "Index", "Producers", null, new { @class = "item" })
-            @Html.ActionLink("Orders", "Index", "Purchase", null, new { @class = "item" })
-            @Html.ActionLink("Discount", "Index", "Discounts", null, new { @class = "item" })
+        @Html.ActionLink("Home", "Index", "Home", null, new { @class = "item" })
+        @Html.ActionLink("About", "About", "Home", null, new { @class = "item" })
+        @Html.ActionLink("Contact", "Contact", "Home", null, new { @class = "item" })
+        @Html.ActionLink("Products", "Index", "Product", null, new { @class = "item" })
+        @Html.ActionLink("AllProducts", "AllProducts", "Product", null, new { @class = "item" })
+        @Html.ActionLink("Categories", "Index", "Categories", null, new { @class = "item" })
+        @Html.ActionLink("Producers", "Index", "Producers", null, new { @class = "item" })
+        @Html.ActionLink("Orders", "Index", "Purchase", null, new { @class = "item" })
+        @Html.ActionLink("Discount", "Index", "Discounts", null, new { @class = "item" })
 
-            @Html.Partial("_LoginPartial")
-        
+        @Html.Partial("_LoginPartial")
+
     </div>
-    <div class="ui content">
+
+    <div class="ui container">
         @RenderBody()
-        
-        <footer>
+    </div>
+
+
+    @*<div>
+        <footer class="ui centered">
             <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
         </footer>
-    </div>
+    </div>*@
+
     <script src="~/Scripts/jquery-3.1.1.min.js"></script>
     <script src="~/Scripts/semantic.min.js"></script>
 
     @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/semantic")
     @RenderSection("scripts", required: false)
 </body>

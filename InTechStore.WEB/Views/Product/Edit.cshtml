@@ -4,118 +4,129 @@
     ViewBag.Title = "Редагування продукту";
 }
 
-<style>
-    .edit-image{
-        width: 20em;
-        height:20em;
-    }
-</style>
-
-<h2>Редагування продукту</h2>
-
 <div>
-    @using (Html.BeginForm("Edit", "Product", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
-
+    @using (Html.BeginForm("Edit", "Product", null, FormMethod.Post, new { enctype = "multipart/form-data", @class = "ui form segment" }))
     {
+        <h1 class="ui text header">Редагувати товар</h1>
         @Html.AntiForgeryToken()
 
-
-        <div>
-            <div>
+        <div class="required field ">
+            <label>
                 @Html.DisplayNameFor(model => model.Name)
-            </div>
-            <div>
-                @Html.EditorFor(model => model.Name)
-                @Html.ValidationMessageFor(model => model.Name)
+            </label>
+            <div class="col-md-9">
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "" } })
+                @Html.ValidationMessageFor(model => model.Name, null, new { @class = " " })
             </div>
         </div>
 
-        <div>
-            <div>
+        <div class="required field">
+            <label>
                 @Html.DisplayNameFor(model => model.SerialNumber)
-            </div>
-            <div>
-                @Html.EditorFor(model => model.SerialNumber)
-                @Html.ValidationMessageFor(model => model.SerialNumber)
+            </label>
+            <div class="">
+                @Html.EditorFor(model => model.SerialNumber, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.SerialNumber, null, htmlAttributes: new { @class = "" })
             </div>
         </div>
 
-        <div>
-            <div>
+        <div class="required field">
+            <label>
                 @Html.DisplayNameFor(model => model.Count)
-            </div>
-            <div>
-                @Html.EditorFor(model => model.Count)
-                @Html.ValidationMessageFor(model => model.Count)
+            </label>
+            <div class="">
+                @Html.EditorFor(model => model.Count, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Count, null, htmlAttributes: new { @class = "" })
             </div>
         </div>
 
-        <div>
-            <div>
+        <div class="required field">
+            <label>
                 @Html.DisplayNameFor(model => model.Price)
-            </div>
-            <div>
-                @Html.EditorFor(model => model.Price)
-                @Html.ValidationMessageFor(model => model.Price)
+            </label>
+            <div class="col-md-9">
+                <div class="ui left labeled input">
+                    <label class="ui label" for="amount">&#x20b4</label>
+                    @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "ui right labeled input" } })
+                </div>
+                @Html.ValidationMessageFor(model => model.Price, null, new { @class = " " })
             </div>
         </div>
 
-        <div>
-            <div>
+        <div class="field">
+            <label>
                 @Html.DisplayNameFor(model => model.Description)
-            </div>
+            </label>
             <div>
                 @Html.EditorFor(model => model.Description)
-                @Html.ValidationMessageFor(model => model.Description)
+                @Html.ValidationMessageFor(model => model.Description, null, new { @class = "" })
             </div>
         </div>
 
-        <div>
-            <div>
+        <div class="field">
+            <label>
                 @Html.DisplayNameFor(model => model.ManufactureDate)
-            </div>
+            </label>
             <div>
                 @Html.EditorFor(model => model.ManufactureDate)
-                @Html.ValidationMessageFor(model => model.ManufactureDate)
+                @Html.ValidationMessageFor(model => model.ManufactureDate, null, new { @class = "" })
             </div>
         </div>
-        <div>
-            <div>
+
+        <div class="field">
+            <label>
                 @Html.DisplayNameFor(model => model.LastDate)
-            </div>
+            </label>
             <div>
-                @Html.EditorFor(model => model.LastDate)
-                @Html.ValidationMessageFor(model => model.LastDate)
+                @Html.EditorFor(model => model.LastDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.LastDate, null, new { @class = "" })
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.DisplayNameFor(model => model.CategoryId)
-            <div class="col-md-9">
-                @Html.DropDownList("CategoryId", (IEnumerable<SelectListItem>)ViewBag.Categories)
-                @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
+            <div class="required field">
+                <label>
+                    @Html.DisplayNameFor(model => model.CategoryId)
+                </label>
+                <select name="CategoryId" class="ui dropdown" id="select">
+                    <option value="">Виберіть категорію</option>
+                    @foreach (var item in (IEnumerable<SelectListItem>)ViewBag.Categories)
+                    {
+                        <option value=@item.Value>@item.Text</option>
+                    }
+                </select>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.DisplayNameFor(model => model.ProducerId)
-            <div class="col-md-9">
-                @Html.DropDownList("ProducerId", (IEnumerable<SelectListItem>)ViewBag.Producers)
-                @Html.ValidationMessageFor(model => model.ProducerId, "", new { @class = "text-danger" })
+
+            <div class="required field">
+                <label>
+                    @Html.DisplayNameFor(model => model.ProducerId)
+                </label>
+                <select name="ProducerId" class="ui dropdown" id="select">
+                    <option value="">Виберіть виробника</option>
+                    @foreach (var item in (IEnumerable<SelectListItem>)ViewBag.Producers)
+                    {
+                        if (item.Value == Model.ProducerId.HasValue.ToString())
+                        {
+                            <option selected value=@item.Value>@item.Text</option>
+                        }
+                        <option value=@item.Value>@item.Text</option>
+                    }
+                </select>
             </div>
-        </div>
 
-        <div class="edit-image">
-            <img src="@Model.Image" class="edit-image" />
-            <input id="file" title="Змінити картинку" type="file" name="file" />
-        </div>
+            <div class="ui field">
+                <div class="ui image">
+                    <img src="@Model.Image" class="ui image medium" />
+                </div>
+                    <input id="file" title="Змінити картинку" type="file" name="file" />
+            </div>
 
 
-        @Html.ValidationSummary();
+            @Html.ValidationSummary();
 
         <div>
-            @Html.ActionLink("< Назад до товарів", "Index")
-            <input type="submit" value="Зберегти" />
+            @Html.ActionLink("< Назад до товарів", "AllProducts", null, htmlAttributes: new { @class = "ui button primary" })
+            <input class="ui button positive" type="submit" value="Зберегти" />
         </div>
     }
 </div>

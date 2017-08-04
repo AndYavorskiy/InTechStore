@@ -453,8 +453,6 @@
     <Content Include="Views\Purchase\Successfully.cshtml" />
     <Content Include="Views\Discounts\Create.cshtml" />
     <Content Include="Views\Discounts\Delete.cshtml" />
-    <Content Include="Views\Discounts\Details.cshtml" />
-    <Content Include="Views\Discounts\Edit.cshtml" />
     <Content Include="Views\Discounts\Index.cshtml" />
     <Content Include="Views\Purchase\Delete.cshtml" />
     <Content Include="Views\Product\_ProductItemPartial.cshtml" />

@@ -1,56 +1,30 @@
 ﻿@model InTechStore.DAL.Entities.Producer
-
 @{
-    ViewBag.Title = "Delete";
+    ViewBag.Title = "Видалення виробника";
 }
-<style>
-    .details-image {
-        width: 20em;
-        height: 20em;
-        position: center center;
-    }
-</style>
-<h2>Delete</h2>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Producer</h4>
-    <hr />
-    <div class="details-image">
-        <img src="@Model.Image" class="details-image" />
-    </div>
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.CompanyName)
-        </dt>
+<div class="ui container stackable segment">
+    <div class="ui icon warning message">
+        <i class=" massive remove  icon"></i>
+        <div class="content">
+            <div class="header">
+                Видалення виробника
+            </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.CompanyName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.PhoneNumber)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.PhoneNumber)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Address)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Address)
-        </dd>
-    </dl>
-
-    @using (Html.BeginForm()) {
+            <p>Ви впевнені, що хочете видалити виробника "<b>@Html.DisplayFor(model => model.CompanyName)</b>"</p>
+            <div class="ui content">
+                <img src="@Model.Image" class="ui image medium" />
+            </div>
+        </div>
+    </div>   
+    
+    @using (Html.BeginForm())
+    {
         @Html.AntiForgeryToken()
 
-        <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+        <div class="ui buttons">
+            @Html.ActionLink("Назад", "Index", null, htmlAttributes: new { @class = "ui button" })
+            <input type="submit" value="Delete" class="ui button negative" />
         </div>
     }
 </div>

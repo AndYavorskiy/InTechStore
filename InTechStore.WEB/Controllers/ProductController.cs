@@ -16,28 +16,32 @@ namespace InTechStore.WEB.Controllers
     {
         IUnitOfWork _uow;
         IEnumerable<Product> _allProducts;
-        IEnumerable<Product> _products;
+        IEnumerable<Product> _availableProducts;
         IEnumerable<Category> _category;
         IEnumerable<Producer> _producers;
-        IGenericRepository<ProductInfo> _prodInfRepository;
 
         public ProductController()
         {
             _uow = new EFUnitOfWork();
-            _products = _uow.ProductRepository.Get(p => p.IsInStock == true);
+            _availableProducts = _uow.ProductRepository.Get(p => p.IsInStock == true);
             _allProducts = _uow.ProductRepository.GetAll();
             _category = _uow.CategoryRepository.GetAll();
             _producers = _uow.ProducerRepository.GetAll();
-
-            _prodInfRepository = _uow.ProductInfoRepository;
         }
         // GET: Product
         public ActionResult Index()
         {
             List<ProductInfoViewModel> productInfoViewModel = new List<ProductInfoViewModel>();
-            foreach (var item in _products)
+            foreach (var item in _availableProducts)
             {
-                productInfoViewModel.Add(new ProductInfoViewModel() { Id = item.Id, Name = item.ProductInfo.Name, Price = item.ProductInfo.Price, IsInStock = item.IsInStock, Image = item.Image });
+                productInfoViewModel.Add(new ProductInfoViewModel()
+                {
+                    Id = item.Id,
+                    Name = item.ProductInfo.Name,
+                    Price = item.ProductInfo.Price,
+                    IsInStock = item.IsInStock,
+                    Image = item.Image
+                });
             }
 
             return View(productInfoViewModel);
@@ -45,14 +49,27 @@ namespace InTechStore.WEB.Controllers
 
         public ActionResult AllProducts()
         {
-            List<ProductInfoViewModel> productInfoViewModel = new List<ProductInfoViewModel>();
+            List<AllProductsInfoViewModel> allProductsViewModel = new List<AllProductsInfoViewModel>();
 
             foreach (var item in _allProducts)
             {
-                productInfoViewModel.Add(new ProductInfoViewModel() { Id = item.Id, Name = item.ProductInfo.Name, Price = item.ProductInfo.Price, IsInStock = item.IsInStock, Image = item.Image });
+                allProductsViewModel.Add(new AllProductsInfoViewModel()
+                {
+                    Id = item.Id,
+                    Name = item.ProductInfo.Name,
+                    Price = item.ProductInfo.Price,
+                    IsInStock = item.IsInStock,
+                    Image = item.Image,
+                    Count = item.Count,
+                    SerialNumber = item.ProductInfo.SerialNumber,
+                    CategoryId = item.ProductInfo.Category.Id,
+                    ProducerId = item.Producer.Id,
+                    ManufactureDate = item.ProductInfo.ManufactureDate,
+                    LastDate = item.ProductInfo.LastDate
+                });
             }
 
-            return View(productInfoViewModel);
+            return View(allProductsViewModel);
         }
 
         public ActionResult Details(int? id)
@@ -73,10 +90,8 @@ namespace InTechStore.WEB.Controllers
             {
                 Id = product.Id,
                 Name = product.ProductInfo.Name,
-                Count = product.Count,
                 Price = product.ProductInfo.Price,
                 Description = product.ProductInfo.Description,
-                SerialNumber = product.ProductInfo.SerialNumber,
                 CategoryName = product.ProductInfo.Category.Name,
                 ManufactureDate = product.ProductInfo.ManufactureDate,
                 LastDate = product.ProductInfo.LastDate,
@@ -141,12 +156,27 @@ namespace InTechStore.WEB.Controllers
                     Category = _uow.CategoryRepository.FindById(createdProduct.CategoryId.Value)
                 };
 
-                _prodInfRepository.Create(productInfo);
+                _uow.ProductInfoRepository.Create(productInfo);
                 _uow.SaveChanges();
 
                 return RedirectToAction("AllProducts", "Product");
             }
-            return View();
+
+            Dictionary<string, string> categoryList = new Dictionary<string, string>();
+            foreach (var item in _category)
+            {
+                categoryList.Add(Convert.ToString(item.Id), item.Name);
+            }
+
+            Dictionary<string, string> producersList = new Dictionary<string, string>();
+            foreach (var item in _producers)
+            {
+                producersList.Add(Convert.ToString(item.Id), item.CompanyName);
+            }
+
+            ViewBag.Categories = new SelectList(categoryList, "Key", "Value");
+            ViewBag.Producers = new SelectList(producersList, "Key", "Value");
+            return View(createdProduct);
         }
 
         [HttpGet]
@@ -192,7 +222,7 @@ namespace InTechStore.WEB.Controllers
             _uow.ProductRepository.Remove(deletedProd);
             _uow.SaveChanges();
 
-            return RedirectToAction("Index");
+            return RedirectToAction("AllProducts");
         }
 
         [HttpGet]
@@ -218,7 +248,11 @@ namespace InTechStore.WEB.Controllers
                 Price = product.ProductInfo.Price,
                 Description = product.ProductInfo.Description,
                 SerialNumber = product.ProductInfo.SerialNumber,
-                Image = product.Image
+                Image = product.Image,
+                CategoryId = product.ProductInfo.CategoryId,
+                ProducerId = product.ProducerId,
+                ManufactureDate = product.ProductInfo.ManufactureDate,
+                LastDate = product.ProductInfo.LastDate
             };
 
             Dictionary<string, string> categoryList = new Dictionary<string, string>();
@@ -279,12 +313,14 @@ namespace InTechStore.WEB.Controllers
                 HttpPostedFileBase file = Request.Files["file"] as HttpPostedFileBase;
 
                 Product prod = _uow.ProductRepository.FindById(editableProductVM.Id);
-                prod.Image = ImageControll.SaveImage(file, ImageType.Product);
-                prod.Count = editableProductVM.Count;
-                if (prod.Count > 0)
+                if (file.ContentLength != 0)
                 {
-                    prod.IsInStock = true;
+                    prod.Image = ImageControll.SaveImage(file, ImageType.Product);
                 }
+                prod.Count = editableProductVM.Count;
+
+                prod.IsInStock = prod.Count > 0 ? true : false;
+
                 prod.Producer = _uow.ProducerRepository.FindById(editableProductVM.ProducerId.Value);
 
                 _uow.ProductRepository.Update(prod);
@@ -293,6 +329,20 @@ namespace InTechStore.WEB.Controllers
                 return RedirectToAction("Index");
             }
 
+            Dictionary<string, string> categoryList = new Dictionary<string, string>();
+            foreach (var item in _category)
+            {
+                categoryList.Add(Convert.ToString(item.Id), item.Name);
+            }
+
+            Dictionary<string, string> producersList = new Dictionary<string, string>();
+            foreach (var item in _producers)
+            {
+                producersList.Add(Convert.ToString(item.Id), item.CompanyName);
+            }
+
+            ViewBag.Categories = new SelectList(categoryList, "Key", "Value");
+            ViewBag.Producers = new SelectList(producersList, "Key", "Value");
             return View(editableProductVM);
         }
     }

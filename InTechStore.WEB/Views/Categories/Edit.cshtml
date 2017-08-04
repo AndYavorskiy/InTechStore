@@ -1,37 +1,33 @@
-﻿@model InTechStore.DAL.Entities.Category
+﻿@model InTechStore.WEB.ViewModels.EditeCategoryViewModel
 
 @{
     ViewBag.Title = "Edit";
 }
 
-<h2>Edit</h2>
-
-@using (Html.BeginForm())
+@using (Html.BeginForm("Edit", "Categories", null, FormMethod.Post, new { @class = "ui form segment" }))
 {
+    <h1 class="ui text header">Редагувати категорію товару</h1>
     @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Category</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Id)
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-            </div>
-        </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
+    @Html.HiddenFor(model => model.Id)
+
+    <div class="required field">
+        <label>
+            @Html.DisplayNameFor(model => model.Name)
+        </label>
+        <div>
+            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "" } })
+            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "" })
         </div>
     </div>
-}
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+
+    @Html.ValidationSummary(true)
+
+
+    <div class="ui blue buttons">
+        @Html.ActionLink("Назад", "Index", null, htmlAttributes: new { @class = "ui button" })
+        <input class="ui button positive" type="submit" value="Зберегти" />
+    </div>
+}

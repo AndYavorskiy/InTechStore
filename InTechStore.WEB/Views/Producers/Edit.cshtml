@@ -1,65 +1,57 @@
 ﻿@model InTechStore.DAL.Entities.Producer
-
 @{
-    ViewBag.Title = "Edit";
-}
-
-<style>
-    .edit-image {
-        width: 20em;
-        height: 20em;
-    }
-</style>
-
-<h2>Edit</h2>
-
-@using (Html.BeginForm("Edit", "Producers", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Producer</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Id)
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.CompanyName, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.CompanyName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.CompanyName, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.PhoneNumber, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="edit-image">
-            <img src="@Model.Image" class="edit-image" />
-            <input id="file" title="Змінити картинку" type="file" name="file" />
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </div>
-    </div>
+    ViewBag.Title = "Редагувати виробника";
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @using (Html.BeginForm("Edit", "Producers", null, FormMethod.Post, new { enctype = "multipart/form-data", @class = "ui form segment" }))
+    {
+        <h1 class="ui text header">Редагувати виробника</h1>
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="required field ">
+            <label>
+                @Html.LabelFor(model => model.CompanyName)
+            </label>
+            <div>
+                @Html.EditorFor(model => model.CompanyName)
+                @Html.ValidationMessageFor(model => model.CompanyName)
+            </div>
+        </div>
+
+        <div class="field">
+            <label>
+                @Html.LabelFor(model => model.PhoneNumber)
+            </label>
+            <div>
+                @Html.EditorFor(model => model.PhoneNumber)
+                @Html.ValidationMessageFor(model => model.PhoneNumber)
+            </div>
+        </div>
+
+        <div class="field">
+            <label>
+                @Html.LabelFor(model => model.Address)
+            </label>
+            <div>
+                @Html.EditorFor(model => model.Address)
+                @Html.ValidationMessageFor(model => model.Address)
+            </div>
+        </div>
+
+        <div class="ui field">
+            <div class="ui image">
+                <img src="@Model.Image" class="ui image medium" />
+            </div>
+            <input id="file" title="Змінити картинку" type="file" name="file" />
+        </div>
+
+        @Html.ValidationSummary(true)
+
+        <div>
+            @Html.ActionLink("Назад", "Index", null, new { @class = "ui button primary" })
+            <input type="submit" value="Зберегти" class="ui button positive" />
+        </div>
+    }
 </div>
